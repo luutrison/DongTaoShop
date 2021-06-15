@@ -1,0 +1,128 @@
+﻿@using DongTaoShop.Models;
+@{
+    ViewBag.Title = "Quản lý đơn hàng | Đông Tảo Shop - Chợ nông sản online của người Việt";
+    Layout = "~/Views/Shared/_adminLayout.cshtml";
+
+    List<DonHang> listDonHang = (List<DonHang>)TempData["DonHang"];
+    var token = Session["UserToken"];
+}
+
+<section class="d-flex justify-content-center content-padding-top" style="min-height: 900px">
+    <div class="row" style="margin: 0px;max-width: 1200px;width: 100%;min-height:700px;">
+        <div class="col-lg-4 col-xl-3 nav-account-pc" style="transition: .5s;z-index: 8;padding-left: 20px;padding-right: 20px;">
+            <div class="row row-cols-1" style="background: rgb(255,255,255);overflow: hidden;box-shadow: inset 0px 0px 5px rgb(0,129,82);margin: 0px;position: sticky;top: 22%;border: 3px solid rgb(33,149,57);">
+                <div class="col col-slidermain active-account-menu">
+                    <div class="row" style="padding-top: 15px;padding-bottom: 15px;">
+                        <div class="col-3 col-xl-2 d-flex justify-content-center align-items-lg-center"><i class="fas fa-shipping-fast" style="font-size: 20px;"></i></div>
+                        <div class="col-auto d-lg-flex d-xl-flex align-items-lg-center align-items-xl-center" style="font-size: 20px;"><span style="font-weight: bold;">Đơn hàng</span></div>
+                    </div><a href="/admin/index" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;"></a>
+                </div>
+                <div class="col col-slidermain" style="border-top: 1px dotted rgb(0,0,0) ;">
+                    <div class="row row-cols-2" style="padding-top: 15px;padding-bottom: 15px;">
+                        <div class="col-3 col-xl-2 d-flex justify-content-center align-items-center"><i class="fas fa-seedling" style="font-size: 21px;"></i></div>
+                        <div class="col-auto d-lg-flex d-xl-flex align-items-lg-center align-items-xl-center" style="font-size: 20px;"><span style="font-weight: bold;">Sản phẩm</span></div>
+                    </div><a href="/admin/product" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;"></a>
+                </div>
+                <div class="col col-slidermain" style="border-top-width: 1px;border-top-style: dotted;">
+                    <div class="row" style="padding-top: 15px;padding-bottom: 15px;">
+                        <div class="col-3 col-xl-2 d-flex justify-content-center align-items-lg-center"><i class="fas fa-user-edit" style="font-size: 21px;"></i></div>
+                        <div class="col-auto d-lg-flex d-xl-flex align-items-lg-center align-items-xl-center" style="font-size: 20px;"><span style="font-weight: bold;">Tài khoản</span></div>
+                    </div><a href="/admin/account" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;"></a>
+                </div>
+                <div class="col col-slidermain" style="border-top-width: 1px;border-top-style: dotted;">
+                    <div class="row" style="padding-top: 15px;padding-bottom: 15px;">
+                        <div class="col-3 col-xl-2 d-flex justify-content-center align-items-lg-center"><i class="fas fa-chart-pie" style="font-size: 21px;"></i></div>
+                        <div class="col-auto d-lg-flex d-xl-flex align-items-lg-center align-items-xl-center" style="font-size: 20px;"><span style="font-weight: bold;">Thống kê</span></div>
+                    </div><a href="/admin/chart" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;"></a>
+                </div>
+                <div class="col col-logout" style="border-top-width: 1px;border-top-style: dotted;">
+                    <div class="row" style="padding-top: 15px;padding-bottom: 15px;">
+                        <div class="col-3 col-xl-2 d-flex justify-content-center"><i class="fas fa-sign-out-alt d-lg-flex align-items-lg-center" style="font-size: 21px;"></i></div>
+                        <div class="col-auto d-lg-flex d-xl-flex align-items-lg-center align-items-xl-center" style="font-size: 20px;"><span style="font-weight: bold;">Đăng xuất</span></div>
+                    </div><a href="/account/logout" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;"></a>
+                </div>
+            </div>
+        </div>
+        <div class="col" style="padding-right: 10px; padding-left: 10px; border-style: solid; border-color: rgb(43,157,110); padding-top: 30px;">
+            <div class="row row-cols-1" style="width: 100%;margin: 0px;">
+                <div class="col justify-content-end align-items-center" style="margin-bottom: 40px;">
+                    <div class="row">
+                        <div class="col d-flex justify-content-start align-items-center"><span class="text-uppercase" style="font-size: 25px;font-weight: bold;">Đơn hàng</span></div>
+                        <div class="col-4 d-flex justify-content-end align-items-center">
+                            <form class="d-xl-flex justify-content-xl-end align-items-xl-center">
+                                <select class="form-control select-width" onchange="this.form.submit()">
+                                    <optgroup label="Lựa chọn">
+                                        <option value="0" selected="">Ngày đặt xa nhất</option>
+                                        <option value="1">Ngày đặt gần nhất</option>
+                                        <option value="3">Giá trị đơn lớn nhất</option>
+                                        <option value="4">Giá trị đơn nhỏ nhất</option>
+                                    </optgroup>
+                                </select>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                @foreach (var item in listDonHang)
+                {
+                    string date = item.NgayDat?.ToString("dd/MM/yyyy");
+                    string diaChi = item.TaiKhoan.SoNha + " / " + item.TaiKhoan.Phuong + " / " + item.TaiKhoan.Quan + " / " + item.TaiKhoan.ThanhPho;
+                    <div class="col" style="overflow: hidden;border: 2px solid rgb(5,82,36);margin-bottom: 30px;">
+                        <div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 row-cols-lg-1 row-cols-xl-2">
+                            <div class="col-lg-10 col-xl-10 d-lg-flex d-xl-flex align-items-lg-center align-items-xl-center" style="padding: 10px;background: #ffffff;">
+                                <div class="row row-cols-1 row-cols-sm-1 row-cols-md-3 row-cols-lg-3 row-cols-xl-3">
+                                    <div class="col-md-2 col-lg-2 col-xl-2 d-flex justify-content-center col-imgorder-admin">
+                                        <div class="row row-cols-2 row-cols-md-1" style="width: 100%;">
+                                            <div class="col-4 d-flex justify-content-center align-items-center align-items-md-end">
+                                                <div style="width: 60px;height: 60px;background: url('../../@item.SanPham.Anh') center / cover no-repeat;border-radius: 50px;"></div>
+                                            </div>
+                                            <div class="col-8 d-flex justify-content-center align-items-center align-items-md-start">
+                                                <div class="row row-cols-2 row-cols-md-1">
+                                                    <div class="col-5 d-md-flex justify-content-md-center"><span style="font-size: 14px;"><strong>SP-@item.IdSanPham</strong></span></div>
+                                                    <div class="col-7 d-md-flex justify-content-md-center"><span style="font-size: 14px;"><strong>@date</strong></span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5 col-lg-5 col-xl-4 d-flex align-items-center" style="border-left-width: 2px;border-left-style: dashed;">
+                                        <div class="row row-cols-1">
+                                            <div class="col"><span>Tên sản phẩm: <strong>@item.SanPham.Ten</strong></span></div>
+                                            <div class="col"><span>Số lượng: <strong>@item.SoLuong @item.SanPham.DonViTinh (<span class="price">@item.SanPham.GiaMoi</span>/@item.SanPham.DonViTinh)</strong></span></div>
+                                            <div class="col"><span>Thành tiền:&nbsp;</span><span class="price" style="font-weight: bold;">@item.TongCong</span><span style="font-weight: bold;">đ</span></div>
+                                            <div class="col d-flex justify-content-start align-items-center"><span>Mã đơn:<strong>&nbsp;DH-</strong></span><span><strong>@item.Id</strong></span></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5 col-lg-5 col-xl-6 d-flex align-items-center col-imgorder-admin" style="padding-left: 15px;padding-right: 15px;border-left-width: 2px;border-left-style: dashed;">
+                                        <div class="row row-cols-1">
+                                            <div class="col"><span>Tên người mua: <strong>@item.TaiKhoan.TenChuTK</strong></span></div>
+                                            <div class="col"><span>Số điện thoại: <strong>@item.TaiKhoan.SDT</strong></span></div>
+                                            <div class="col"><span>Địa chỉ: <strong>@diaChi</strong></span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-xl-2 col-actionitem-admin">
+                                <div class="row row-cols-lg-1 row-cols-xl-1" style="height: 100%;cursor: pointer;">
+                                    <div class="col d-flex d-lg-flex d-xl-flex justify-content-center align-items-center justify-content-lg-center align-items-lg-center justify-content-xl-center align-items-xl-center plus-item-admin-order"><span class="text-uppercase accept-text-order" style="font-weight: bold;">Chốt</span><a href="/admin/acceptorder?token=@token&id=@item.Id" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;"></a></div>
+                                    <div class="col d-flex d-xl-flex justify-content-center align-items-center justify-content-xl-center align-items-xl-center minus-item-admin-order"><span class="text-uppercase cancel-text-order" style="font-weight: bold;">Hủy</span><a href="/admin/refuseorder?token=@token&id=@item.Id" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;"></a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div class="col d-flex justify-content-center col-button-product">
+                    <nav>
+                        <ul class="pagination">
+                            <li class="page-item"><a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
+                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link" href="#">4</a></li>
+                            <li class="page-item"><a class="page-link" href="#">5</a></li>
+                            <li class="page-item"><a class="page-link" href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

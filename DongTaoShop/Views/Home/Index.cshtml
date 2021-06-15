@@ -1,0 +1,163 @@
+﻿@using DongTaoShop.Models;
+@using DongTaoShop.Controllers;
+@{
+    ViewBag.Title = "Home | Đông Tảo Shop - Chợ nông sản online của người Việt";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<SanPham> listSanPham = ViewBag.SanPhamIntro;
+}
+@*Bottom Header*@
+<div class="d-flex justify-content-center bottom-header color-bottom-header" style="position: relative;top: 0;width: 100%;z-index: 100;">
+    <div class="carousel slide d-flex justify-content-center" data-ride="carousel" id="carousel-1" style="max-width: 1200px;width: 100%;height: 100%;">
+        <div class="carousel-inner" style="width: 80%;">
+            <div class="carousel-item active color-bottom-header" style="height: 100%;">
+                <div class="d-flex justify-content-center align-items-center" style="width: 100%;height: 100%;"><span class="span-bot-header">Tặng voucher 50K cho các khách hàng thân thiết</span></div>
+            </div>
+            <div class="carousel-item color-bottom-header" style="height: 100%;">
+                <div class="d-flex justify-content-center align-items-center" style="width: 100%;height: 100%;"><span class="span-bot-header">Giảm 5% khi mua lần đầu tất cả các mặt hàng</span></div>
+            </div>
+            <div class="carousel-item color-bottom-header" style="height: 100%;">
+                <div class="d-flex justify-content-center align-items-center" style="width: 100%;height: 100%;"><span class="span-bot-header">Sale 10% các sản&nbsp; phẩm vào vụ</span></div>
+            </div>
+        </div>
+        <div><a class="carousel-control-prev" href="#carousel-1" role="button" data-slide="prev"><span class="carousel-control-prev-icon"></span><span class="sr-only">Previous</span></a><a class="carousel-control-next" href="#carousel-1" role="button" data-slide="next"><span class="carousel-control-next-icon"></span><span class="sr-only">Next</span></a></div>
+    </div>
+</div>
+@*Carousel*@
+<section class="art-swiper">
+    <div class="carousel slide" data-ride="carousel" id="carousel-2">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="d-flex justify-content-center align-items-center swiper-slide" style="background: url(&quot;../../assets/img/p1.jpg&quot;) center center / cover no-repeat;cursor: pointer;">
+                    <div class="row row-cols-1">
+                        <div class="col d-flex justify-content-center"><span class="txt-swiper-title" style="color: rgb(255,255,255);font-weight: bold;text-shadow: 0px 0px 5px rgb(0,0,0);">Đông Tảo Shop</span></div>
+                        <div class="col d-flex justify-content-center"><span class="text-center txt-swiper-des" style="color: rgb(255,255,255);font-weight: bold;text-shadow: 0px 0px 3px rgb(0,0,0);margin-bottom: 10px;">Mua ngay để nhận nhiều khuyến mãi</span></div>
+                        <div class="col d-flex justify-content-center"><button class="btn btn-primary text-uppercase txt-swiper-des btn-white-hover" type="button" style="font-weight: bold;border-style: none;outline: none;transition: .5s;">Mua ngay</button></div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="d-flex justify-content-center align-items-center swiper-slide" style="background: url(&quot;../../assets/img/p2.jpg&quot;) center center / cover no-repeat;cursor: pointer;">
+                    <div class="row row-cols-1">
+                        <div class="col d-flex justify-content-center"><span class="txt-swiper-title" style="color: rgb(255,255,255);font-weight: bold;text-shadow: 0px 0px 5px rgb(0,0,0);">Đông Tảo Shop</span></div>
+                        <div class="col d-flex justify-content-center"><span class="text-center txt-swiper-des" style="color: rgb(255,255,255);font-weight: bold;text-shadow: 0px 0px 3px rgb(0,0,0);margin-bottom: 10px;">Giảm 5% cho đơn hàng đầu tiên của mỗi sản phẩm khi dùng tài khoản</span></div>
+                        <div class="col d-flex justify-content-center"><button class="btn btn-primary text-uppercase txt-swiper-des btn-white-hover" type="button" style="font-weight: bold;border-style: none;outline: none;transition: .5s;">Mua ngay</button></div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="d-flex justify-content-center align-items-center swiper-slide" style="background: url(&quot;../../assets/img/p3.jpg&quot;) center center / cover no-repeat;cursor: pointer;">
+                    <div class="row row-cols-1">
+                        <div class="col d-flex justify-content-center"><span class="txt-swiper-title" style="color: rgb(255,255,255);font-weight: bold;text-shadow: 0px 0px 5px rgb(0,0,0);">Đông Tảo Shop</span></div>
+                        <div class="col d-flex justify-content-center"><span class="text-center txt-swiper-des" style="color: rgb(255,255,255);font-weight: bold;text-shadow: 0px 0px 3px rgb(0,0,0);margin-bottom: 10px;">Chung tay cùng người nông dân làm tăng thu nhập và cải thiện cuộc sống</span></div>
+                        <div class="col d-flex justify-content-center"><button class="btn btn-primary text-uppercase txt-swiper-des btn-white-hover" type="button" style="font-weight: bold;border-style: none;outline: none;transition: .5s;">Đăng ký</button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div><a class="carousel-control-prev" href="#carousel-2" role="button" data-slide="prev"><span class="carousel-control-prev-icon"></span><span class="sr-only">Previous</span></a><a class="carousel-control-next" href="#carousel-2" role="button" data-slide="next"><span class="carousel-control-next-icon"></span><span class="sr-only">Next</span></a></div>
+        <ol class="carousel-indicators">
+            <li data-target="#carousel-2" data-slide-to="0" class="active"></li>
+            <li data-target="#carousel-2" data-slide-to="1"></li>
+            <li data-target="#carousel-2" data-slide-to="2"></li>
+        </ol>
+    </div>
+</section>
+
+<section class="d-sm-flex justify-content-xl-center section-intro" style="margin-top: 15px;">
+    <article class="d-xl-flex justify-content-xl-center art-swiper section-intro" style="width: 100%;max-width: 1920px;background-image: url(&quot;../../assets/img/background-b1.jpg&quot;);background-position: center;background-size: cover;background-repeat: no-repeat;">
+        <div class="row row-cols-4 d-xl-flex row-intro" data-aos="fade-up" style="color: rgb(255,255,255);margin-right: 0px;margin-left: 0px;max-width: 1920px;">
+            <div class="col text-center col-intro" style="margin-bottom: 160px;">
+                <div class="row row-cols-1">
+                    <div class="col"><i class="fas fa-laugh-beam icon-scale-home-intro"></i></div>
+                    <div class="col" style="margin-top: 10px;"><span class="counting txt-scale-screen" data-count="50000" style="font-weight: bold;">5</span></div>
+                    <div class="col"><span class="text-uppercase txt-scale-screen"><strong>hài lòng</strong><br></span></div>
+                </div>
+            </div>
+            <div class="col text-center col-intro" style="margin-bottom: 160px;">
+                <div class="row row-cols-1">
+                    <div class="col"><i class="fas fa-truck-pickup icon-scale-home-intro"></i></div>
+                    <div class="col" style="margin-top: 10px;"><span class="counting txt-scale-screen" data-count="1000" style="font-weight: bold;">5</span></div>
+                    <div class="col"><span class="text-uppercase txt-scale-screen"><strong>chuyến đi</strong><br></span></div>
+                </div>
+            </div>
+            <div class="col text-center col-intro" style="margin-bottom: 160px;">
+                <div class="row row-cols-1">
+                    <div class="col"><i class="fas fa-male icon-scale-home-intro"></i></div>
+                    <div class="col" style="margin-top: 10px;"><span class="counting txt-scale-screen" data-count="200" style="font-weight: bold;">5</span></div>
+                    <div class="col"><span class="text-uppercase txt-scale-screen"><strong>nông dân</strong><br></span></div>
+                </div>
+            </div>
+            <div class="col text-center col-intro" style="margin-bottom: 160px;">
+                <div class="row row-cols-1">
+                    <div class="col"><i class="fas fa-balance-scale-right icon-scale-home-intro"></i></div>
+                    <div class="col" style="margin-top: 10px;"><span class="counting txt-scale-screen" data-count="50" style="font-weight: bold;">5</span></div>
+                    <div class="col"><span class="text-uppercase txt-scale-screen"><strong>quy trình</strong><br></span></div>
+                </div>
+            </div>
+        </div>
+    </article>
+</section>
+
+<section class="section-product" style="background: url(&quot;../../assets/img/background.svg&quot;) center / cover no-repeat;">
+    <article class="d-xl-flex justify-content-xl-center art-swiper" style="overflow: hidden;">
+        <div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 row-cols-lg-1 row-cols-xl-2" style="z-index: 1;max-width: 1450px;">
+            <div class="col-xl-6 d-flex d-xl-flex justify-content-center align-items-center justify-content-lg-center justify-content-xl-center align-items-xl-center banner-intro-product" style="background-repeat: no-repeat;margin-top: 15px;background-image: url(&quot;../../assets/img/ryan-searle-7Ku54ZgKEcs-unsplash.jpg&quot;);background-position: center;background-size: cover;">
+                <div class="row row-cols-1 text-center">
+                    <div class="col" style="padding-top: 50px;"><span class="text-monospace text-capitalize" style="color: rgb(255,255,255);font-size: 35px;font-weight: bold;">Sản phẩm nổi bật</span></div>
+                    <div class="col" style="padding-bottom: 30px;"><span class="text-monospace text-uppercase txt-scale-intro" style="color: rgb(255,255,255);font-weight: bold;">Oganic 100%</span></div>
+                </div>
+            </div>
+            <div class="col-xl-6 d-flex justify-content-lg-center list-item-intro" style="padding-top: 50px;">
+                <div class="row row-cols-1">
+                    <div class="col d-flex justify-content-center" style="padding: 0px;">
+                        <div class="row row-cols-2 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 row-cols-xl-2" style="max-width: 700px;margin: 0px;padding-left: 15px;padding-right: 15px;">
+
+                            @foreach (var item in listSanPham)
+                            {
+                                <div class="col d-flex d-xl-flex justify-content-center align-items-center justify-content-xl-center align-items-xl-center item-product-parent" style="cursor: pointer;margin-bottom: 20px;padding: 0px;">
+                                    <div class="row no-gutters row-cols-1 row-item-product" style="margin: 0px; overflow: hidden; box-shadow: 0px 0px 5px rgb(163,163,163); background-color: white">
+                                        <div class="col d-flex justify-content-center align-items-center head-item-product" style="padding: 0px;overflow: hidden;">
+                                            <div class="d-xl-flex justify-content-xl-center align-items-xl-center size-item-product image-item-product image-product" style="height: 100%;width: 100%;background: url('../../@item.Anh') center / cover no-repeat;border-bottom: 1px solid rgb(198,198,198);"></div>
+                                            @if (item.DacSan == true)
+                                            {
+                                                <img style="width: 100%;position: absolute;height: 100%;" src="../../assets/img/ds.png">
+                                            }
+                                            @if (TempData["NoiBat"] != null && TempData["NoiBat"].Equals("Show"))
+                                            {
+                                                <img style="position: absolute;width: 100%;height: 100%;" src="../../assets/img/nb.png">
+                                            }
+                                            <div class="d-flex justify-content-center align-items-center ground-item-product" style="position: absolute;overflow: hidden;width: 100%;height: 100%;">
+                                                <div class="row row-cols-1" style="width: 100%;height: 100%;">
+                                                    <div class="col d-flex justify-content-center align-items-center" style="padding: 0px;">
+                                                        <div class="row row-cols-1">
+                                                            <div class="col d-flex justify-content-center"><i class="fas fa-box-open txt-scale-item" style="color: rgb(255,255,255);"></i></div>
+                                                            <div class="col d-flex justify-content-center" style="margin-top: 10px;"><span class="txt-scale-price" style="font-weight: bold;color: rgb(255,255,255);">Xem sản phẩm</span></div>
+                                                        </div><a class="link-scale-text" href="/shop/detailproduct?id=@item.Id" style="position: absolute;width: 100%;height: 100%;top: 0;"></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col col-detail-item-product" style="padding: 0px;">
+                                            <div class="row row-cols-1" style="margin: 0px;height: 100%;">
+                                                <div class="col text-break text-center" style="padding: 0px;"><a class="name-item-product" href="detail-product.html" style="color: rgb(0,0,0);font-weight: bold;">@item.Ten</a></div>
+                                            </div>
+                                        </div>
+                                        <div class="col d-flex align-items-end" style="padding: 0px;overflow: hidden;">
+                                            <div class="row row-cols-1">
+                                                <div class="col d-flex justify-content-center" style="padding: 5px 0px;border-top: 2px dashed rgb(177,177,177) ;"><span class="price-delete" style="text-decoration: line-through;color: rgb(128,128,128);font-weight: bold;">@item.GiaCu</span><span class="decore-text-price" style="text-decoration: line-through;color: rgb(128,128,128);font-weight: bold;">đ</span><span class="price price-no-delete" style="margin-left: 10px;color: rgb(0,132,45);font-weight: bold;">@item.GiaMoi</span><span class="price-no-delete" style="color: rgb(0,132,45);font-weight: bold;">đ</span></div>
+                                                <div class="col" style="padding: 0px;background: #b3b3b3;"><button class="btn btn-primary btn-lg text-uppercase btn-add-cart price-no-delete" type="button">Thêm vào giỏ</button></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            }
+
+                        </div>
+                    </div>
+                    <div class="col d-flex d-sm-flex justify-content-center justify-content-sm-center col-viewmore"><a href="shop.html"><button class="btn btn-primary text-monospace text-uppercase border rounded-0 border-white button-intro-product-viewmore" type="button">đến cửa hàng</button></a></div>
+                </div>
+            </div>
+        </div>
+    </article>
+</section>

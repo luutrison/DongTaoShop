@@ -1,0 +1,143 @@
+﻿@using DongTaoShop.Models;
+@using DongTaoShop.Controllers;
+@{
+    ViewBag.Title = "Thanh Toán | Đông Tảo Shop - Chợ nông sản online của người Việt";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    List<SanPham> list = (List<SanPham>)TempData["ListCart"];
+    List<int> numICart = (List<int>)TempData["ListCartNumber"];
+    List<KhuyenMai> listKM = (List<KhuyenMai>)TempData["ListKhuyenMai"];
+    var total = 0;
+    var totalOld = 0;
+    var totalKM = 0;
+    var countList = list.Count;
+    var ship = 40000;
+
+    TempData.Keep("ListCart");
+    TempData.Keep("ListCartNumber");
+}
+
+<div style="position: fixed;top: 0;width: 100%;left: 0;height: 100vh;background: #eeeeee;"></div>
+
+<section class="d-xl-flex justify-content-xl-center align-items-xl-center">
+    @using (Html.BeginForm("FinishPayCart", "Shop", FormMethod.Post))
+    {
+        <div class="row row-cols-1" style="max-width: 1200px; width: 100%; margin: 0px; background: #ffffff; padding-top: 60px; padding-bottom: 100px; min-height: 700px; position: relative">
+            <div class="col" style="padding: 0px;">
+                <div class="row" style="margin: 0px;">
+                    <div class="col">
+                        <div class="row row-cols-1">
+                            <div class="col"><span class="text-uppercase" style="font-weight: bold;font-size: 25px;">Thanh toán</span></div>
+                            <div class="col"><span class="text-uppercase" style="font-weight: bold;font-size: 18px;color: rgb(46,155,68);">@countList sản phẩm</span></div>
+                        </div>
+                    </div>
+                    <div class="col-5 d-flex justify-content-end">
+                        <form>
+                            <select class="form-control select-width" onchange="this.form.submit()">
+                                <optgroup label="Lựa chọn">
+                                    <option value="1" selected="">Giá thấp đến cao</option>
+                                    <option value="2">Giá cao đến thấp</option>
+                                    <option value="3">Số lượng</option>
+                                </optgroup>
+                            </select>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col" style="padding-top: 50px;padding-bottom: 40px;">
+                <div class="row row-cols-1" style="padding-left: 15px;padding-right: 15px;">
+
+                    @for (int i = 0; i < countList; i++)
+                    {
+                        int KM = 0;
+
+                        <div class="col" style="border-width: 2px;border-style: solid;overflow: hidden; margin-bottom: 20px;">
+                            <div class="row row-cols-1">
+                                <div class="col">
+                                    <div class="row row-cols-1 row-cols-sm-1 row-cols-md-3">
+                                        <div class="col-md-2 col-xl-2 d-flex d-sm-flex d-xl-flex justify-content-center justify-content-sm-center justify-content-xl-center align-items-xl-center" style="padding-top: 10px;padding-bottom: 10px;">
+                                            <div class="form-row row-cols-2 row-cols-sm-2 row-cols-md-1" style="width: 100%;">
+                                                <div class="col d-flex justify-content-center">
+                                                    <div style="width: 60px;height: 60px;background: url('../../@list[i].Anh') center / cover no-repeat;border-radius: 50px;"></div>
+                                                </div>
+                                                <div class="col d-flex justify-content-center align-items-center"><span><strong>SP-@list[i].Id</strong></span></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5 col-xl-5 d-lg-flex d-xl-flex justify-content-lg-end justify-content-xl-end align-items-xl-center">
+                                            <div class="row row-cols-1">
+                                                <div class="col" style="background: #eaeaea;"><span>Tên sản phẩm: <strong>@list[i].Ten</strong></span></div>
+                                                <div class="col"><span>Số lượng: <strong>@numICart[i]</strong></span></div>
+                                                <div class="col" style="background: #eaeaea;"><span>Đơn vị tính: <strong>@list[i].DonViTinh</strong></span></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5 col-xl-5 d-xl-flex justify-content-xl-start align-items-xl-center">
+                                            <div class="row row-cols-1">
+                                                <div class="col"><span>Giá tiền/sản phẩm:&nbsp;</span><span class="price" style="font-weight: bold;">@list[i].GiaMoi</span><span style="font-weight: bold;">đ</span></div>
+                                                <div class="col" style="background: #eaeaea;">
+                                                    <span>
+                                                        Khuyến mãi:
+                                                        @if (listKM[i].MuaLanDau == true)
+                                                        {
+                                                            <strong>Giảm @list[i].GLD% khi mua lần đầu, </strong>
+                                                            KM += @list[i].GLD ?? default(int);
+                                                        }
+                                                        @if (listKM[i].MuaNhieu == true)
+                                                        {
+                                                            <strong>Giảm @list[i].MNG% khi mua từ @list[i].MNSL @list[i].DonViTinh @list[i].DonViTinh, </strong>
+                                                            KM += @list[i].MNG ?? default(int);
+                                                        }
+                                                        @if (listKM[i].ThanhVien == true)
+                                                        {
+                                                            <strong>Giảm @list[i].TVG% khi mua từ @list[i].TVM lần trở lên và mỗi lần từ @list[i].TVSPLM @list[i].DonViTinh</strong>
+                                                            KM += @list[i].TVG ?? default(int);
+                                                        }
+                                                        @if (listKM[i].MuaLanDau == false && listKM[i].MuaNhieu == false && listKM[i].ThanhVien == false)
+                                                        {
+                                                            <strong>Không đủ yêu cầu để nhận khuyến mãi</strong>
+                                                        }
+                                                    </span>
+                                                </div>
+                                                <div class="col">
+                                                    <span>Thành tiền:&nbsp;</span><span class="price" style="font-weight: bold;">
+                                                        @{
+                                                            var price = list[i].GiaMoi * numICart[i];
+                                                            var priceKM = price - (price * KM / 100);
+                                                            totalKM += price * KM / 100 ?? default(int);
+                                                            totalOld += price ?? default(int);
+                                                        }
+                                                        @price
+                                                    </span>
+                                                    <span style="font-weight: bold;"> - @KM% = </span>
+                                                    <span class="price" style="font-weight: bold;">@priceKM</span><span style="font-weight: bold;">đ</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col d-flex d-xl-flex justify-content-center align-items-center justify-content-xl-center align-items-xl-center col-minus-shopcart" style="height: 45px;margin-top: 10px;transition: .3s;"><i class="fas fa-minus" style="color: rgb(255,255,255);font-size: 40px;"></i><a href="#" style="position: absolute;height: 100%;width: 100%;"></a></div>
+                            </div>
+                        </div>
+                        <input hidden name="idSanPham" value="@list[i].Id" />
+                        <input hidden name="soluong" value="@numICart[i]" />
+                        { total = total + priceKM ?? default(int); }
+                    }
+                    @{total = total + ship;}
+                </div>
+            </div>
+            <div class="col col-button-product">
+                <div class="form-row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-2">
+                    <div class="col-md-8 col-lg-8 col-xl-9 d-flex justify-content-center align-items-center justify-content-md-start align-items-md-center justify-content-xl-start">
+                        <div class="form-row row-cols-1">
+                            <div class="col"><span style="font-weight: bold;font-size: 20px;color: rgb(85,85,85);">Đơn hàng:&nbsp;</span><span style="font-weight: bold;font-size: 20px;color: rgb(85,85,85);">+</span><span class="price" style="font-weight: bold;font-size: 20px;color: rgb(85,85,85);">@totalOld</span><span style="font-weight: bold;font-size: 20px;color: rgb(85,85,85);">đ</span></div>
+                            <div class="col"><span style="font-weight: bold;font-size: 20px;color: rgb(85,85,85);">Phí vận chuyển:&nbsp;</span><span style="font-weight: bold;font-size: 20px;color: rgb(85,85,85);">+</span><span class="price" style="font-weight: bold;font-size: 20px;color: rgb(85,85,85);">@ship</span><span style="font-weight: bold;font-size: 20px;color: rgb(85,85,85);">đ</span></div>
+                            <div class="col"><span style="font-weight: bold;font-size: 20px;color: rgb(85,85,85);">Khuyến mãi:&nbsp;</span><span style="font-weight: bold;font-size: 20px;color: rgb(85,85,85);">-</span><span class="price" style="font-weight: bold;font-size: 20px;color: rgb(85,85,85);">@totalKM</span><span style="font-weight: bold;font-size: 20px;color: rgb(85,85,85);">đ</span></div>
+                            <div class="col"><span style="font-size: 35px;font-weight: bold;">Tổng:&nbsp;</span><span class="price" style="font-size: 35px;font-weight: bold;color: rgb(179,0,0);">@total</span><span style="font-size: 35px;font-weight: bold;color: rgb(179,0,0);">đ</span></div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-xl-3 d-flex justify-content-center align-items-center justify-content-md-end align-items-xl-start"><button class="btn btn-primary text-uppercase" type="submit" style="font-size: 30px;font-weight: bold;background: rgb(237,84,0);border-style: none;width: 100%;">Đặt hàng</button></div>
+                </div>
+            </div>
+        </div>
+    }
+
+</section>

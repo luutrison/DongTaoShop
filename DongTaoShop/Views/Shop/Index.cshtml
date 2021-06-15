@@ -1,0 +1,225 @@
+﻿@using DongTaoShop.Models;
+@using PagedList.Mvc;
+@using DongTaoShop.Controllers;
+@model PagedList.IPagedList<DongTaoShop.Models.SanPham>
+
+@{
+    ViewBag.Title = "Cửa hàng | Đông Tảo Shop - Chợ nông sản online của người Việt";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var checkedBox = TempData["SelectSort"];
+    var checkedTypeSort = TempData["TypeSort"];
+    DongTaoShopEntities db = new DongTaoShopEntities();
+
+
+    TempData.Keep("SelectSort");
+    TempData.Keep("TypeSort");
+    TempData.Keep("ListShop");
+    TempData.Keep("NoiBat");
+}
+
+<div style="position: fixed;width: 100%;height: 100vh;background: url('../../assets/img/background.svg') center / cover no-repeat;top: 0;"></div>
+@*Bottom Header*@
+<div class="d-flex justify-content-center bottom-header color-bottom-header" style="position: relative;top: 0;width: 100%;z-index: 10;background: rgba(238,238,238,0);">
+    <div data-ride="carousel" class="carousel slide d-flex justify-content-center" id="carousel-1" style="max-width: 1200px;width: 100%;height: 100%;user-select: none;">
+        <div class="carousel-inner" style="width: 80%;">
+            <div class="carousel-item active color-bottom-header" style="height: 100%;">
+                <div class="d-flex justify-content-center align-items-center" style="width: 100%;height: 100%;"><span class="span-bot-header">Tặng voucher 50K cho các khách hàng thân thiết</span></div>
+            </div>
+            <div class="carousel-item color-bottom-header" style="height: 100%;">
+                <div class="d-flex justify-content-center align-items-center" style="width: 100%;height: 100%;"><span class="span-bot-header">Giảm 5% khi mua lần đầu tất cả các mặt hàng</span></div>
+            </div>
+            <div class="carousel-item color-bottom-header" style="height: 100%;">
+                <div class="d-flex justify-content-center align-items-center" style="width: 100%;height: 100%;"><span class="span-bot-header">Sale 10% các sản  phẩm vào vụ</span></div>
+            </div>
+        </div>
+        <div><a href="#carousel-1" role="button" data-slide="prev" class="carousel-control-prev"><span class="carousel-control-prev-icon"></span><span class="sr-only">Previous</span></a><a href="#carousel-1" role="button" data-slide="next" class="carousel-control-next"><span class="carousel-control-next-icon"></span><span class="sr-only">Next</span></a></div>
+    </div>
+</div>
+@*Banner*@
+
+<section class="d-none banner-doc" style="z-index: 0;position: absolute;width: 100%;min-height: 700px;">
+    <div style="position: absolute;width: 100%;top: 0;height: 100%;"><img style="right: 0;" src="../../assets/img/banner-doc.png" /></div>
+    <div class="d-xl-flex justify-content-xl-end" style="position: absolute;width: 100%;top: 0;height: 100%;"><img style="right: 0;height: 600px;" src="../../assets/img/banner-doc.png" /></div>
+</section>
+
+@*Top Banner*@
+<section class="d-flex justify-content-center" style="position: relative;">
+    <div style="width: 100%;max-width: 1200px;"><img class="banner-shop" src="../../assets/img/banner.png" style="width: 100%;" /></div>
+</section>
+
+<section class="d-flex d-sm-flex d-xl-flex justify-content-center justify-content-sm-center justify-content-xl-center content-margin-top content-shop" style="width: 100%;">
+    <div class="row row-cols-sm-1 row-cols-md-1 row-cols-lg-2 row-cols-xl-2 d-md-flex justify-content-md-center" style="max-width: 1250px; width: 100%; position: relative; padding: 10px; padding-top: 40px; padding-bottom: 40px;">
+        <div class="col-lg-4 col-xl-3 text-nowrap" style="padding-left: 25px;">
+            <div class="row row-cols-1 sort-col-shop-pc sort-shop" style="position: sticky;padding-top: 30px;padding-bottom: 30px;height: 650px;color: rgb(255,255,255);background: linear-gradient(rgba(0,0,0,0.36), rgba(0,0,0,0.89) 99%), url(' ../../assets/img/gabriel-jimenez-jin4W1HqgL4-unsplash.jpg') top / cover no-repeat;top: 20%;">
+                <div class="col d-lg-flex d-xl-flex justify-content-lg-center align-items-lg-center justify-content-xl-center"><span class="text-uppercase" style="font-size: 20px;font-weight: bold;margin-top: 5px;color: rgb(255,255,255);">Danh mục sản phẩm</span></div>
+                <div class="col">
+                    @using (Html.BeginForm("SortData", "Shop", FormMethod.Post))
+                    {
+                    <div class="form-row row-cols-1">
+                        <div class="col d-xl-flex align-items-xl-center col-checkbox-shop-pc" style="padding-left: 40px;margin-top: 20px;"><input type="checkbox" class="checkbox-shop-pc" style="width: 20px;height: 20px;" name="check-shop-nb" onclick="checkBoxShop(this)" /><span class="span-name-cb-shop" style="margin-left: 20px;font-size: 20px;font-weight: bold;">Nổi bật</span></div>
+                        <div class="col d-xl-flex align-items-xl-center col-checkbox-shop-pc" style="padding-left: 40px;margin-top: 20px;"><input type="checkbox" class="checkbox-shop-pc" style="width: 20px;height: 20px;" name="check-shop-ds" onclick="checkBoxShop(this)" /><span class="span-name-cb-shop" style="margin-left: 20px;font-size: 20px;font-weight: bold;">Đặc sản</span></div>
+                        <div class="col d-xl-flex align-items-xl-center col-checkbox-shop-pc" style="padding-left: 40px;margin-top: 20px;"><input type="checkbox" class="checkbox-shop-pc" style="width: 20px;height: 20px;" name="check-shop-vm" onclick="checkBoxShop(this)" /><span class="span-name-cb-shop" style="margin-left: 20px;font-size: 20px;font-weight: bold;">Vụ mùa</span></div>
+                        <div class="col d-xl-flex align-items-xl-center col-checkbox-shop-pc" style="padding-left: 40px;margin-top: 20px;"><input type="checkbox" class="checkbox-shop-pc" style="width: 20px;height: 20px;" name="check-shop-rau" onclick="checkBoxShop(this)" /><span class="span-name-cb-shop" style="margin-left: 20px;font-size: 20px;font-weight: bold;">Rau củ</span></div>
+                        <div class="col d-xl-flex align-items-xl-center col-checkbox-shop-pc" style="padding-left: 40px;margin-top: 20px;"><input type="checkbox" class="checkbox-shop-pc" style="width: 20px;height: 20px;" name="check-shop-thit" onclick="checkBoxShop(this)" /><span class="span-name-cb-shop" style="margin-left: 20px;font-size: 20px;font-weight: bold;">Thịt</span></div>
+                        <div class="col d-xl-flex align-items-xl-center col-checkbox-shop-pc" style="padding-left: 40px;margin-top: 20px;"><input type="checkbox" class="checkbox-shop-pc" style="width: 20px;height: 20px;" name="check-shop-ths" onclick="checkBoxShop(this)" /><span class="span-name-cb-shop" style="margin-left: 20px;font-size: 20px;font-weight: bold;">Thủy - Hải sản</span></div>
+                        <div class="col d-xl-flex align-items-xl-center col-checkbox-shop-pc" style="padding-left: 40px;margin-top: 20px;"><input type="checkbox" class="checkbox-shop-pc" style="width: 20px;height: 20px;" name="check-shop-hq" onclick="checkBoxShop(this)" /><span class="span-name-cb-shop" style="margin-left: 20px;font-size: 20px;font-weight: bold;">Hoa quả</span></div>
+                        <div class="col d-xl-flex align-items-xl-center col-checkbox-shop-pc" style="padding-left: 40px;margin-top: 20px;"><input type="checkbox" class="checkbox-shop-pc" style="width: 20px;height: 20px;" name="check-shop-nam" onclick="checkBoxShop(this)" /><span class="span-name-cb-shop" style="margin-left: 20px;font-size: 20px;font-weight: bold;">Nấm</span></div>
+                        <div class="col" style="margin-top: 37px;">
+                            <select class="form-control" id="select-shop-1" name="select1" onchange="this.form.submit()">
+                                <optgroup label="Lựa chọn">
+                                    <option value="0">Ưa thích</option>
+                                    <option value="1">Giá tăng dần</option>
+                                    <option value="2">Giá giảm dần</option>
+                                    <option value="3">Theo tên A-Z</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="col d-lg-flex d-xl-flex justify-content-lg-center justify-content-xl-center" style="margin-top: 35px;"><button class="btn btn-primary" type="submit" style="width: 100%;font-weight: bold;font-size: 25px;background: rgb(0,109,4);border: none;">Lọc sản phẩm</button></div>
+                    </div>
+                    }
+                </div>
+            </div>
+            <div class="row row-cols-1 sort-col-shop-mobile" style="overflow: hidden;margin-bottom: 30px;">
+                <div class="col d-flex justify-content-center align-items-center" style="padding-right: 10px;padding-left: 0px;">
+                    <div class="row" style="width: 100%;max-width: 585px;">
+                        <div class="col" style="padding: 0px;">
+                            @using (Html.BeginForm("SortData", "Shop", FormMethod.Post, new { @style = "width: 100%;", @class = "d-flex" }))
+                            {
+                                <select class="form-control form-control-lg " id="select-type-mob" style="width: 50%;height: 100%;margin-right: 5px;" name="select1" onchange="this.form.submit()">
+                                    <optgroup label="Loại">
+                                        <option value="Nổi bật">Nổi bật</option>
+                                        <option value="Đặc sản">Đặc sản</option>
+                                        <option value="Vụ mùa">Vụ mùa</option>
+                                        <option value="Rau củ">Rau củ</option>
+                                        <option value="Thịt">Thịt</option>
+                                        <option value="Thủy - Hải sản">Thủy - Hải sản</option>
+                                        <option value="Hoa quả">Hoa quả</option>
+                                        <option value="Nấm">Nấm</option>
+                                    </optgroup>
+                                </select>
+                                <select class="form-control form-control-lg " id="select-shop-2" style="width: 50%;height: 100%;margin-left: 5px;" name="select2" onchange="this.form.submit()">
+                                    <optgroup label="Lựa chọn">
+                                        <option value="0">Ưa thích</option>
+                                        <option value="1">Giá tăng dần</option>
+                                        <option value="2">Giá giảm dần</option>
+                                        <option value="3">Theo tên A-Z</option>
+                                    </optgroup>
+                                </select>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8 col-xl-9 d-lg-flex justify-content-lg-center" style="padding: 0px;">
+            <div class="row row-cols-1" style="width: 100%;margin: 0px;">
+                <div class="col-md-12 col-lg-12 d-flex d-md-flex justify-content-center justify-content-md-center align-items-lg-start col-left-shop" style="padding: 0px">
+                    <div class="row row-cols-2 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 row-cols-xl-3" id="row-item-product-shop" style="width: 100%;">
+
+                        @foreach (var item in Model)
+                        {
+
+                            <div class="col d-flex d-xl-flex justify-content-center align-items-center justify-content-xl-center align-items-xl-center item-product-parent" style="cursor: pointer;margin-bottom: 20px;padding: 0px;">
+                                <div class="row no-gutters row-cols-1 row-item-product" style="margin: 0px;overflow: hidden;box-shadow: 0px 0px 5px rgb(163,163,163); background-color: white">
+                                    <div class="col d-flex justify-content-center align-items-center head-item-product" style="padding: 0px;overflow: hidden;">
+                                        <div class="d-xl-flex justify-content-xl-center align-items-xl-center size-item-product image-item-product image-product" style="height: 100%;width: 100%;background: url('../../@item.Anh') center / cover no-repeat;border-bottom: 1px solid rgb(198,198,198);"></div>
+                                        @if (item.DacSan == true)
+                                        {
+                                            <img style="width: 100%;position: absolute;height: 100%;" src="../../assets/img/ds.png">
+                                        }
+                                        @if (TempData["NoiBat"] != null && TempData["NoiBat"].Equals("Show"))
+                                        {
+                                            <img style="position: absolute;width: 100%;height: 100%;" src="../../assets/img/nb.png">
+                                        }
+                                        <div class="d-flex justify-content-center align-items-center ground-item-product" style="position: absolute;overflow: hidden;width: 100%;height: 100%;">
+                                            <div class="row row-cols-1" style="width: 100%;height: 100%;">
+                                                <div class="col d-flex justify-content-center align-items-center" style="padding: 0px;">
+                                                    <div class="row row-cols-1">
+                                                        <div class="col d-flex justify-content-center"><i class="fas fa-box-open txt-scale-item" style="color: rgb(255,255,255);"></i></div>
+                                                        <div class="col d-flex justify-content-center" style="margin-top: 10px;"><span class="txt-scale-price" style="font-weight: bold;color: rgb(255,255,255);">Xem sản phẩm</span></div>
+                                                    </div><a class="link-scale-text" href="/shop/detailproduct?id=@item.Id" style="position: absolute;width: 100%;height: 100%;top: 0;"></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col col-detail-item-product" style="padding: 0px;">
+                                        <div class="row row-cols-1" style="margin: 0px;height: 100%;">
+                                            <div class="col text-break text-center" style="padding: 0px;"><a class="name-item-product" href="detail-product.html" style="color: rgb(0,0,0);font-weight: bold;">@item.Ten</a></div>
+                                        </div>
+                                    </div>
+                                    <div class="col d-flex align-items-end" style="padding: 0px;overflow: hidden;">
+                                        <div class="row row-cols-1">
+                                            <div class="col d-flex justify-content-center" style="padding: 5px 0px;border-top: 2px dashed rgb(177,177,177) ;"><span class="price-delete" style="text-decoration: line-through;color: rgb(128,128,128);font-weight: bold;">@item.GiaCu</span><span class="decore-text-price" style="text-decoration: line-through;color: rgb(128,128,128);font-weight: bold;">đ</span><span class="price price-no-delete" style="margin-left: 10px;color: rgb(0,132,45);font-weight: bold;">@item.GiaMoi</span><span class="price-no-delete" style="color: rgb(0,132,45);font-weight: bold;">đ</span></div>
+                                            <div class="col" style="padding: 0px;background: #b3b3b3;"><button class="btn btn-primary btn-lg text-uppercase btn-add-cart price-no-delete" type="button">Thêm vào giỏ</button></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="col d-flex d-xl-flex justify-content-center align-items-start justify-content-xl-center col-button-product" style="height: 300px;padding-top: 35px;">
+                    <div class="row row-cols-1">
+                        <div class="col d-flex justify-content-center align-items-end" style="font-weight: bold; margin-top: 30px;">
+                            Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+                        </div>
+                        <div class="col d-flex justify-content-center">
+                            @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+<script type="text/javascript">
+    var checkBoxMain = document.getElementsByClassName("col-checkbox-shop-pc");
+    var selectPc = document.getElementById('select-shop-1');
+    var selectMob = document.getElementById('select-shop-2');
+    var typeMob = document.getElementById('select-type-mob');
+    var checkedbox = @Html.Raw(Json.Encode(checkedBox));
+    if (checkedbox != "") {
+        for (var i = 0; i < checkBoxMain.length; i++) {
+            var element = checkBoxMain[i];
+            var boxName = element.querySelector(".span-name-cb-shop").innerHTML;
+            if (boxName == checkedbox) {
+                element.querySelector(".checkbox-shop-pc").checked = true;
+            }
+        }
+        for (var i = 0; i < typeMob.length; i++) {
+            if (typeMob[i].value == checkedbox) {
+                typeMob.selectedIndex = i;
+            }
+        }
+        selectPc.selectedIndex = "@checkedTypeSort";
+        selectMob.selectedIndex = "@checkedTypeSort";
+    }
+    else {
+        // Nếu tải lại or ko chọn
+        checkBoxMain[0].querySelector(".checkbox-shop-pc").checked = true;
+        selectPc.selectedIndex = "0";
+        selectMob.selectedIndex = "0";
+    }
+
+    for (var i = 0; i < checkBoxMain.length; i++) {
+        var element = checkBoxMain[i];
+        var checkbox = element.querySelector(".checkbox-shop-pc");
+
+        var spanChecked = element.querySelector(".span-name-cb-shop");
+        if (checkbox.checked == true) {
+            checkbox.value = spanChecked.innerHTML;
+        }
+        else {
+            checkbox.value = "";
+        }
+    }
+    if ('@TempData["ClearCart"]' == 'OK') {
+        localStorage.removeItem("itemCart");
+    }
+</script>

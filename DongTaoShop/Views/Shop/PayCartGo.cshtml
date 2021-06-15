@@ -1,0 +1,199 @@
+﻿@using DongTaoShop.Models
+@{
+    ViewBag.Title = "Thanh Toán Trực Tiếp | Đông Tảo Shop - Chợ nông sản online của người Việt";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    List<SanPham> list = (List<SanPham>)TempData["ListCart"];
+    List<int> numICart = (List<int>)TempData["ListCartNumber"];
+    var total = 0;
+    var totalPay = 0;
+    var ship = 40000;
+    var countList = list.Count;
+
+    TempData.Keep("ListCart");
+    TempData.Keep("ListCartNumber");
+}
+<div style="position: fixed;top: 0;width: 100%;left: 0;height: 100vh;background: #eeeeee;"></div>
+
+<section class="d-xl-flex justify-content-xl-center align-items-xl-center">
+    <div class="row row-cols-1" style="max-width: 1200px; width: 100%; margin: 0px; background: #ffffff; position: relative; padding-top: 60px; padding-bottom: 100px; position: relative">
+        <div class="col" style="padding: 0px;">
+            <div class="row" style="margin: 0px;">
+                <div class="col">
+                    <div class="row row-cols-1">
+                        <div class="col"><span class="text-uppercase" style="font-weight: bold;font-size: 25px;">Thanh toán</span></div>
+                        <div class="col"><span class="text-uppercase" style="font-weight: bold;font-size: 18px;color: rgb(46,155,68);">@countList sản phẩm</span></div>
+                    </div>
+                </div>
+                <div class="col-5 d-flex justify-content-end">
+                    <form>
+                        <select class="form-control select-width" onchange="this.form.submit()">
+                            <optgroup label="Lựa chọn">
+                                <option value="1" selected="">Giá thấp đến cao</option>
+                                <option value="2">Giá cao đến thấp</option>
+                                <option value="3">Số lượng</option>
+                            </optgroup>
+                        </select>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <form method="post" name="google-sheet" autocomplete="off">
+                <div class="form-row row-cols-1">
+                    <div class="col" style="padding-top: 40px;padding-right: 0px;padding-left: 0px;">
+                        <div class="form-row row-cols-1">
+                            <div class="col d-flex justify-content-center" style="padding-bottom: 18px;">
+                                <div class="form-row" style="width: 100%;">
+                                    <div class="col">
+                                        <div class="form-row row-cols-1">
+                                            <div class="col d-xl-flex align-items-xl-center"><span style="font-weight: bold;font-size: 18px;">Họ và tên:&nbsp;</span></div>
+                                            <div class="col"><input class="form-control form-control-lg" type="text" style="max-width: 800px;width: 100%;font-size: 20px;padding-left: 10px;" name="ten" required minlength="5"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-row row-cols-1">
+                                            <div class="col d-xl-flex align-items-xl-center"><span style="font-weight: bold;font-size: 18px;">Số điện thoại:&nbsp;</span></div>
+                                            <div class="col"><input class="form-control form-control-lg" type="number" style="max-width: 800px;width: 100%;font-size: 20px;padding-left: 10px;" name="sodienthoai" required maxlength="12" minlength="10"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col d-flex justify-content-center" style="padding-bottom: 18px;">
+                                <div class="form-row" style="width: 100%;">
+                                    <div class="col">
+                                        <div class="form-row row-cols-1">
+                                            <div class="col d-xl-flex align-items-xl-center"><span style="font-weight: bold;font-size: 18px;">Địa chỉ:&nbsp;</span></div>
+                                            <div class="col"><input class="form-control form-control-lg" type="text" style="width: 100%;font-size: 20px;padding-left: 10px;" name="diachi" required></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col d-flex justify-content-center" style="padding-bottom: 18px;">
+                                <div class="form-row" style="width: 100%;">
+                                    <div class="col">
+                                        <div class="form-row row-cols-1">
+                                            <div class="col d-xl-flex align-items-xl-center"><span style="font-weight: bold;font-size: 18px;">Yêu cầu khi giao&nbsp;</span></div>
+                                            <div class="col"><input class="form-control form-control-lg" type="text" style="max-width: 800px;width: 100%;font-size: 20px;padding-left: 10px;" name="yeucau"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-row row-cols-1">
+                                            <div class="col d-xl-flex align-items-xl-center"><span style="font-weight: bold;font-size: 18px;">Đơn vị giao&nbsp;</span></div>
+                                            <div class="col">
+                                                <select class="form-control form-control-lg" style="width: 100%;max-width: 800px;" name="giaohang">
+                                                    <optgroup label="Lựa chọn">
+                                                        <option value="Viettel Post" selected="">Viettel Post</option>
+                                                        <option value="Giao Hàng Nhanh">Giao Hàng Nhanh</option>
+                                                        <option value="Ninja Vận">Ninja Vận</option>
+                                                    </optgroup>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col" style="padding-top: 50px;padding-bottom: 40px;">
+                        <div class="form-row row-cols-1" style="padding-left: 15px;padding-right: 15px;">
+                            @{
+                                var sanpham = "";
+                            }
+                            @for (int i = 0; i < countList; i++)
+                            {
+                                <div class="col" style="border-width: 2px;border-style: solid;overflow: hidden; margin-bottom: 20px">
+                                    <div class="form-row row-cols-1">
+                                        <div class="col">
+                                            <div class="form-row row-cols-1 row-cols-sm-1 row-cols-md-3">
+                                                <div class="col-md-2 col-xl-2 d-flex d-sm-flex d-xl-flex justify-content-center justify-content-sm-center justify-content-xl-center align-items-xl-center" style="padding-top: 10px;padding-bottom: 10px;">
+                                                    <div class="form-row row-cols-2 row-cols-sm-2 row-cols-md-1" style="width: 100%;">
+                                                        <div class="col d-flex justify-content-center">
+                                                            <div style="width: 60px;height: 60px;background: url('../../@list[i].Anh') center / cover no-repeat;border-radius: 50px;"></div>
+                                                        </div>
+                                                        <div class="col d-flex justify-content-center align-items-center"><span><strong>SP-@list[i].Id</strong></span></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-5 col-xl-5 d-lg-flex d-xl-flex justify-content-lg-end justify-content-xl-end align-items-xl-center">
+                                                    <div class="form-row row-cols-1">
+                                                        <div class="col" style="background: #eaeaea;"><span>Tên sản phẩm: <strong>@list[i].Ten</strong></span></div>
+                                                        <div class="col"><span>Số lượng: <strong>@numICart[i]</strong></span></div>
+                                                        <div class="col" style="background: #eaeaea;"><span>Đơn vị tính: <strong>@list[i].DonViTinh</strong></span></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-5 col-xl-5 d-xl-flex justify-content-xl-start align-items-xl-center">
+                                                    <div class="form-row row-cols-1">
+                                                        <div class="col"><span>Giá tiền/sản phẩm:&nbsp;</span><span class="price" style="font-weight: bold;">@list[i].GiaMoi</span><span style="font-weight: bold;">đ</span></div>
+                                                        <div class="col" style="background: #eaeaea;"><span style="color: rgb(255,0,0);">Khuyến mãi: <strong>Giảm giá không được áp dụng khi mua trực tiếp</strong></span></div>
+                                                        @{
+                                                            var price = list[i].GiaMoi * numICart[i];
+                                                            total = total + price ?? default(int);
+                                                            sanpham += list[i].Ten + "(" + numICart[i]  + list[i].DonViTinh.ToLower() + ")   ";
+                                                        }
+                                                        <div class="col"><span>Thành tiền:&nbsp;</span><span class="price" style="font-weight: bold;">@price</span><span style="font-weight: bold;">đ</span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col d-flex d-xl-flex justify-content-center align-items-center justify-content-xl-center align-items-xl-center col-minus-shopcart" style="height: 45px;margin-top: 10px;transition: .3s;"><i class="fas fa-minus" style="color: rgb(255,255,255);font-size: 40px;"></i><a href="#" style="position: absolute;height: 100%;width: 100%;"></a></div>
+                                    </div>
+                                </div>
+                            }
+
+
+                            @{ totalPay = total + 40000;}
+                        </div>
+                    </div>
+                    <div class="col col-button-product">
+                        <div class="form-row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-2">
+                            <div class="col-md-8 col-lg-8 col-xl-9 d-flex justify-content-center align-items-center justify-content-md-start align-items-md-center justify-content-xl-start" style="padding-bottom: 30px;">
+                                <div class="form-row row-cols-1">
+                                    <div class="col"><span style="font-weight: bold;font-size: 20px;color: rgb(85,85,85);">Đơn hàng:&nbsp;</span><span style="font-weight: bold;font-size: 20px;color: rgb(85,85,85);">+</span><span class="price" style="font-weight: bold;font-size: 20px;color: rgb(85,85,85);">@total</span><span style="font-weight: bold;font-size: 20px;color: rgb(85,85,85);">đ</span></div>
+                                    <div class="col"><span style="font-weight: bold;font-size: 20px;color: rgb(85,85,85);">Phí vận chuyển:&nbsp;</span><span style="font-weight: bold;font-size: 20px;color: rgb(85,85,85);">+</span><span class="price" style="font-weight: bold;font-size: 20px;color: rgb(85,85,85);">@ship</span><span style="font-weight: bold;font-size: 20px;color: rgb(85,85,85);">đ</span></div>
+                                    <div class="col"><span style="font-weight: bold;font-size: 20px;color: rgb(85,85,85);">Khuyến mãi:&nbsp;</span><span style="font-weight: bold;font-size: 20px;color: rgb(85,85,85);">-</span><span class="price" style="font-weight: bold;font-size: 20px;color: rgb(85,85,85);">0</span><span style="font-weight: bold;font-size: 20px;color: rgb(85,85,85);">đ</span></div>
+                                    <div class="col" ><span style="font-size: 35px;font-weight: bold;">Tổng:&nbsp;</span><span class="price" style="font-size: 35px;font-weight: bold;color: rgb(179,0,0);">@totalPay</span><span style="font-size: 35px;font-weight: bold;color: rgb(179,0,0);">đ</span></div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-4 col-xl-3 d-flex justify-content-center align-items-center justify-content-md-end align-items-xl-start"><button class="btn btn-primary text-uppercase" type="submit" style="font-size: 30px;font-weight: bold;background: rgb(237,84,0);border-style: none;width: 100%;">Đặt hàng</button></div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <input class="form-control" type="text" name="sanpham" hidden="" value="@sanpham">
+            </form>
+        </div>
+    </div>
+</section>
+<section class="d-flex justify-content-center align-items-center loader-main" style="position: fixed;height: 0px;top: 0;background: rgba(0,0,0,0.75);width: 0px;overflow: hidden;transition: .2s;z-index: 10000;"><span role="status" class="spinner-border spinner-border-sm" style="width: 100px;height: 100px;color: rgb(0,255,53);font-size: 70px;"></span></section>
+
+<script>
+    const scriptURL =
+        'https://script.google.com/macros/s/AKfycbxyE9Lph-VUuwqAaLeERshlLFmryQu157qXxPiafCn5VHA2mhv3PCNQ6POwTFZqC1oIdQ/exec'
+    const form = document.forms['google-sheet']
+
+    form.addEventListener('submit', e => {
+        showLoader();
+        e.preventDefault()
+        fetch(scriptURL, { method: 'POST', body: new FormData(form) })
+            .then(response => clearCart())
+            .catch(error => hideLoader())
+    })
+
+    function clearCart() {
+        localStorage.removeItem("itemCart");
+        location.replace("/Shop?redirect=1")
+    }
+
+    function showLoader() {
+        var loader = document.getElementsByClassName("loader-main")[0].style;
+        loader.width = '100%';
+        loader.height = '100%';
+    }
+    function hideLoader() {
+        var loader = document.getElementsByClassName("loader-main")[0].style;
+        loader.width = '0%';
+        loader.height = '0%';
+        alert("Đã xảy ra lỗi, xin hãy thử lại sau!")
+    }
+</script>

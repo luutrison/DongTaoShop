@@ -1,0 +1,67 @@
+﻿
+@{
+    ViewBag.Title = "Chart";
+    Layout = "~/Views/Shared/_adminLayout.cshtml";
+}
+
+<section class="d-flex justify-content-center content-padding-top" style="z-index: 10;">
+    <div class="row row-cols-2" style="width: 100%;max-width: 1200px;">
+        <div class="col-lg-3 col-xl-3 nav-account-pc" style="transition: .5s;z-index: 8;">
+            <div class="row row-cols-1" style="background: rgb(255,255,255);overflow: hidden;box-shadow: inset 0px 0px 5px rgb(43,157,110);margin: 0px;position: sticky;top: 20%;border: 3px solid rgb(43,157,110);">
+                <div class="col col-slidermain">
+                    <div class="row" style="padding-top: 15px;padding-bottom: 15px;">
+                        <div class="col-3 col-xl-2 d-flex justify-content-center align-items-lg-center"><i class="fas fa-shipping-fast" style="font-size: 20px;"></i></div>
+                        <div class="col-auto d-lg-flex d-xl-flex align-items-lg-center align-items-xl-center" style="font-size: 20px;"><span style="font-weight: bold;">Đơn hàng</span></div>
+                    </div><a href="/admin/index" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;"></a>
+                </div>
+                <div class="col col-slidermain" style="border-top: 1px dotted rgb(0,0,0) ;">
+                    <div class="row row-cols-2" style="padding-top: 15px;padding-bottom: 15px;">
+                        <div class="col-3 col-xl-2 d-flex justify-content-center align-items-center"><i class="fas fa-seedling" style="font-size: 21px;"></i></div>
+                        <div class="col-auto d-lg-flex d-xl-flex align-items-lg-center align-items-xl-center" style="font-size: 20px;"><span style="font-weight: bold;">Sản phẩm</span></div>
+                    </div><a href="/admin/product" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;"></a>
+                </div>
+                <div class="col col-slidermain" style="border-top-width: 1px;border-top-style: dotted;">
+                    <div class="row" style="padding-top: 15px;padding-bottom: 15px;">
+                        <div class="col-3 col-xl-2 d-flex justify-content-center align-items-lg-center"><i class="fas fa-user-edit" style="font-size: 21px;"></i></div>
+                        <div class="col-auto d-lg-flex d-xl-flex align-items-lg-center align-items-xl-center" style="font-size: 20px;"><span style="font-weight: bold;">Tài khoản</span></div>
+                    </div><a href="/admin/account" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;"></a>
+                </div>
+                <div class="col col-slidermain  active-account-menu" style="border-top-width: 1px;border-top-style: dotted;">
+                    <div class="row" style="padding-top: 15px;padding-bottom: 15px;">
+                        <div class="col-3 col-xl-2 d-flex justify-content-center align-items-lg-center"><i class="fas fa-chart-pie" style="font-size: 21px;"></i></div>
+                        <div class="col-auto d-lg-flex d-xl-flex align-items-lg-center align-items-xl-center" style="font-size: 20px;"><span style="font-weight: bold;">Thống kê</span></div>
+                    </div><a href="/admin/chart" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;"></a>
+                </div>
+                <div class="col col-logout" style="border-top-width: 1px;border-top-style: dotted;">
+                    <div class="row" style="padding-top: 15px;padding-bottom: 15px;">
+                        <div class="col-3 col-xl-2 d-flex justify-content-center"><i class="fas fa-sign-out-alt d-lg-flex align-items-lg-center" style="font-size: 21px;"></i></div>
+                        <div class="col-auto d-lg-flex d-xl-flex align-items-lg-center align-items-xl-center" style="font-size: 20px;"><span style="font-weight: bold;">Đăng xuất</span></div>
+                    </div><a href="/account/logout" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;"></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-lg-8 col-xl-9 d-flex justify-content-center align-items-center" style="padding: 0px;border-style: solid;border-color: rgb(43,157,110);">
+            <div class="row row-cols-1" style="width: 100%;background: #ffffff;">
+                <div class="col" style="padding-top: 15px;padding-bottom: 15px;"><span class="text-uppercase d-flex d-xl-flex justify-content-center justify-content-xl-center" style="font-weight: bold;font-size: 40px;">Thống kê</span></div>
+                <div class="col d-block">
+                    <div style="padding: 15px;margin-bottom: 15px;"><input type="number" style="width: 190px;height: 35px;padding-right: 10px;padding-left: 10px;" placeholder="Nhập năm muốn xem"><button class="btn btn-primary none-button" type="button" style="background: rgb(43,157,110);margin-top: -5px;font-weight: bold;">Xem</button></div>
+                    <div class="d-flex justify-content-center"><span class="justify-content-center txt-scale-price">Doanh số bán hàng năm 2021</span></div>
+                    <div class="d-flex justify-content-center align-items-center" style="width: 100%;"><canvas data-bss-chart="{&quot;type&quot;:&quot;bar&quot;,&quot;data&quot;:{&quot;labels&quot;:[&quot;Tháng 1&quot;,&quot;Tháng 2&quot;,&quot;Tháng 3&quot;,&quot;Tháng 4&quot;,&quot;Tháng 5&quot;,&quot;Tháng 6&quot;],&quot;datasets&quot;:[{&quot;label&quot;:&quot;Doanh số&quot;,&quot;backgroundColor&quot;:&quot;#2b9d6e&quot;,&quot;borderColor&quot;:&quot;#006038&quot;,&quot;data&quot;:[&quot;4500&quot;,&quot;5300&quot;,&quot;6250&quot;,&quot;7800&quot;,&quot;9800&quot;,&quot;15000&quot;]}]},&quot;options&quot;:{&quot;maintainAspectRatio&quot;:true,&quot;legend&quot;:{&quot;display&quot;:false,&quot;reverse&quot;:false},&quot;title&quot;:{&quot;position&quot;:&quot;top&quot;,&quot;display&quot;:false,&quot;text&quot;:&quot;&quot;},&quot;scales&quot;:{&quot;xAxes&quot;:[{&quot;gridLines&quot;:{&quot;drawBorder&quot;:true,&quot;drawTicks&quot;:true},&quot;ticks&quot;:{&quot;beginAtZero&quot;:true}}],&quot;yAxes&quot;:[{&quot;gridLines&quot;:{&quot;drawBorder&quot;:true,&quot;drawTicks&quot;:true,&quot;drawOnChartArea&quot;:true},&quot;ticks&quot;:{&quot;beginAtZero&quot;:true}}]}}}"></canvas></div>
+                </div>
+                <div class="col d-block" style="margin-top: 80px;">
+                    <div class="d-flex justify-content-center"><span class="justify-content-center txt-scale-price">So với 5 năm liền kề</span></div>
+                    <div class="d-flex justify-content-center align-items-center" style="width: 100%;"><canvas data-bss-chart="{&quot;type&quot;:&quot;pie&quot;,&quot;data&quot;:{&quot;labels&quot;:[&quot;Năm 2017&quot;,&quot;Năm 2018&quot;,&quot;Năm 2019&quot;,&quot;Năm 2020&quot;,&quot;Năm 2021&quot;],&quot;datasets&quot;:[{&quot;label&quot;:&quot;Doanh số&quot;,&quot;backgroundColor&quot;:[&quot;#9d692b&quot;,&quot;#9d462b&quot;,&quot;#722b9d&quot;,&quot;rgb(62,98,167)&quot;,&quot;#2b9d6e&quot;],&quot;borderColor&quot;:[&quot;#ffffff&quot;,&quot;#ffffff&quot;,&quot;#ffffff&quot;,&quot;#ffffff&quot;,&quot;#ffffff&quot;],&quot;data&quot;:[&quot;5300&quot;,&quot;6250&quot;,&quot;7800&quot;,&quot;9800&quot;,&quot;15000&quot;]}]},&quot;options&quot;:{&quot;maintainAspectRatio&quot;:true,&quot;legend&quot;:{&quot;display&quot;:true,&quot;reverse&quot;:false},&quot;title&quot;:{&quot;position&quot;:&quot;top&quot;,&quot;display&quot;:false,&quot;text&quot;:&quot;&quot;}}}"></canvas></div>
+                </div>
+                <div class="col d-block" style="margin-top: 80px;">
+                    <div class="d-flex justify-content-center"><span class="d-block justify-content-center txt-scale-price">Dự đoán tháng tiếp theo</span></div>
+                    <div class="d-flex justify-content-center align-items-center" style="width: 100%;"><canvas data-bss-chart="{&quot;type&quot;:&quot;line&quot;,&quot;data&quot;:{&quot;labels&quot;:[&quot;Tháng 1&quot;,&quot;Tháng 2&quot;,&quot;Tháng 3&quot;,&quot;Tháng 4&quot;,&quot;Tháng 5&quot;,&quot;Tháng 6&quot;,&quot;Tháng 7&quot;],&quot;datasets&quot;:[{&quot;label&quot;:&quot;Revenue&quot;,&quot;backgroundColor&quot;:&quot;rgba(78,115,223,0)&quot;,&quot;borderColor&quot;:&quot;#4e73df&quot;,&quot;data&quot;:[&quot;4500&quot;,&quot;5300&quot;,&quot;6250&quot;,&quot;7800&quot;,&quot;9800&quot;,&quot;15000&quot;,&quot;15500&quot;],&quot;fill&quot;:true,&quot;borderWidth&quot;:&quot;5&quot;}]},&quot;options&quot;:{&quot;maintainAspectRatio&quot;:true,&quot;legend&quot;:{&quot;display&quot;:false},&quot;title&quot;:{}}}"></canvas></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section scripts{
+    <script src="~/assets/js/chart.min.js"></script>
+}
+

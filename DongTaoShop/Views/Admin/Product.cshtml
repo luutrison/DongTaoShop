@@ -1,0 +1,205 @@
+﻿@using DongTaoShop.Models;
+@using PagedList.Mvc;
+@model PagedList.IPagedList<DongTaoShop.Models.SanPham>
+@{
+    ViewBag.Title = "Sản Phẩm | Đông Tảo Shop - Chợ nông sản online của người Việt";
+    Layout = "~/Views/Shared/_adminLayout.cshtml";
+    TempData.Keep("Sort");
+    TempData.Keep("ListSanPham");
+}
+
+
+<section class="content-padding-top" style="width: 100%;display: flex;justify-content: center; min-height: 900px">
+    <div class="row" style="width: 100%;max-width: 1200px;">
+        <div class="col-lg-4 col-xl-3 nav-account-pc" style="transition: .5s;z-index: 8;padding-left: 20px;padding-right: 20px;">
+            <div class="row row-cols-1" style="background: rgb(255,255,255);overflow: hidden;box-shadow: inset 0px 0px 5px rgb(0,129,82);margin: 0px;position: sticky;top: 22%;border: 3px solid rgb(33,149,57);">
+                <div class="col col-slidermain ">
+                    <div class="row" style="padding-top: 15px;padding-bottom: 15px;">
+                        <div class="col-3 col-xl-2 d-flex justify-content-center align-items-lg-center"><i class="fas fa-shipping-fast" style="font-size: 20px;"></i></div>
+                        <div class="col-auto d-lg-flex d-xl-flex align-items-lg-center align-items-xl-center" style="font-size: 20px;"><span style="font-weight: bold;">Đơn hàng</span></div>
+                    </div><a href="/admin/index" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;"></a>
+                </div>
+                <div class="col col-slidermain active-account-menu" style="border-top: 1px dotted rgb(0,0,0) ;">
+                    <div class="row row-cols-2" style="padding-top: 15px;padding-bottom: 15px;">
+                        <div class="col-3 col-xl-2 d-flex justify-content-center align-items-center"><i class="fas fa-seedling" style="font-size: 21px;"></i></div>
+                        <div class="col-auto d-lg-flex d-xl-flex align-items-lg-center align-items-xl-center" style="font-size: 20px;"><span style="font-weight: bold;">Sản phẩm</span></div>
+                    </div><a href="/admin/product" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;"></a>
+                </div>
+                <div class="col col-slidermain" style="border-top-width: 1px;border-top-style: dotted;">
+                    <div class="row" style="padding-top: 15px;padding-bottom: 15px;">
+                        <div class="col-3 col-xl-2 d-flex justify-content-center align-items-lg-center"><i class="fas fa-user-edit" style="font-size: 21px;"></i></div>
+                        <div class="col-auto d-lg-flex d-xl-flex align-items-lg-center align-items-xl-center" style="font-size: 20px;"><span style="font-weight: bold;">Tài khoản</span></div>
+                    </div><a href="/admin/account" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;"></a>
+                </div>
+                <div class="col col-slidermain" style="border-top-width: 1px;border-top-style: dotted;">
+                    <div class="row" style="padding-top: 15px;padding-bottom: 15px;">
+                        <div class="col-3 col-xl-2 d-flex justify-content-center align-items-lg-center"><i class="fas fa-chart-pie" style="font-size: 21px;"></i></div>
+                        <div class="col-auto d-lg-flex d-xl-flex align-items-lg-center align-items-xl-center" style="font-size: 20px;"><span style="font-weight: bold;">Thống kê</span></div>
+                    </div><a href="/admin/chart" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;"></a>
+                </div>
+                <div class="col col-logout" style="border-top-width: 1px;border-top-style: dotted;">
+                    <div class="row" style="padding-top: 15px;padding-bottom: 15px;">
+                        <div class="col-3 col-xl-2 d-flex justify-content-center"><i class="fas fa-sign-out-alt d-lg-flex align-items-lg-center" style="font-size: 21px;"></i></div>
+                        <div class="col-auto d-lg-flex d-xl-flex align-items-lg-center align-items-xl-center" style="font-size: 20px;"><span style="font-weight: bold;">Đăng xuất</span></div>
+                    </div><a href="/account/logout" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;"></a>
+                </div>
+            </div>
+        </div>
+        <div class="col d-flex justify-content-center" style="overflow: hidden; padding: 5px; border-style: solid; border-color: rgb(0,129,82);">
+            <div class="row row-cols-1" style="width: 100%; margin: 0px">
+                <div class="col" style="padding-top: 5px;">
+                    <div class="row row-cols-2" style="margin-bottom: 10px;">
+                        <div class="col-12 d-flex justify-content-start align-items-center" style="padding-bottom: 10px"><div class="d-flex" style="width: 100%;background: #2b9d6e;color: rgb(255,255,255);padding-left: 10px;"><span class="text-uppercase" style="font-size: 39px;font-weight: bold;">Sản phẩm</span></div></div>
+                        <div class="col-12 d-xl-flex align-items-xl-center">
+                            <div style="width: 100%">
+                                @using (Html.BeginForm("searchproduct", "admin", FormMethod.Post))
+                                {
+                                    <input name="search" class="form-control-lg" type="search" style="outline: none;font-weight: bold;width: 100%;border: 3px solid rgb(0,129,82) ;" placeholder="Tìm kiếm">
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-cols-2" style="margin-bottom: 50px;">
+                        <div class="col"><button class="btn btn-primary text-uppercase btn-hover-green" type="button" style="width: 100%;height: 100%;box-shadow: none;border: none;font-size: 25px;font-weight: bold;">Thêm</button><a href="/admin/addproduct" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;"></a></div>
+                        <div class="col">
+                            @using (Html.BeginForm("sortproduct", "admin", FormMethod.Post))
+                            {
+                                <select id="sort" name="loc" class="form-control-lg" style="width: 100%;height: 100%;border: 3px solid rgb(0,129,82) ;" onchange="this.form.submit()">
+                                    <optgroup label="Danh sách">
+                                        <option value="Mặc định">Mặc định</option>
+                                        <option value="Đặc sản">Đặc sản</option>
+                                        <option value="Vụ mùa">Vụ mùa</option>
+                                        <option value="Rau củ">Rau củ</option>
+                                        <option value="Hoa quả">Hoa quả</option>
+                                        <option value="Thủy - Hải sản">Thủy - Hải sản</option>
+                                        <option value="Thịt">Thịt</option>
+                                        <option value="Nấm">Nấm</option>
+                                    </optgroup>
+                                </select>
+                            }
+
+                        </div>
+                    </div>
+                    <div class="row row-cols-1" style="padding-left: 15px;padding-right: 15px;">
+                        @foreach (var item in Model)
+                        {
+
+                            <div class="col" style="overflow: hidden;border: 2px solid rgb(5,82,36);margin-bottom: 30px;">
+                                <div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 row-cols-lg-1 row-cols-xl-2">
+                                    <div class="col-lg-12 col-xl-12 d-lg-flex d-xl-flex align-items-lg-center align-items-xl-center" style="padding: 10px;background: #ffffff;">
+                                        <div class="row">
+                                            <div class="col-md-2 col-lg-2 col-xl-2 d-flex justify-content-center col-imgorder-admin">
+                                                <div class="row row-cols-2 row-cols-md-1" style="width: 100%;">
+                                                    <div class="col d-flex justify-content-center align-items-end">
+                                                        <div style="width: 70px;height: 70px;background: url(&quot;../../@item.Anh&quot;) center / cover no-repeat;border-radius: 50px;"></div>
+                                                    </div>
+                                                    <div class="col d-flex justify-content-center align-items-start"><span style="font-size: 14px;"><strong>SP-@item.Id</strong></span></div>
+                                                </div>
+                                            </div>
+                                            @{
+                                                string khuyenMai = null;
+                                                if (item.GLD != null && item.GLD > 0)
+                                                {
+                                                    khuyenMai += "Giảm lần đầu " + item.GLD + "%. ";
+                                                }
+                                                if (item.TVG != null && item.TVG > 0)
+                                                {
+                                                    khuyenMai += "Khách quen được giảm " + item.TVG + "%. ";
+                                                }
+                                                if (item.MNG != null && item.MNG > 0)
+                                                {
+                                                    khuyenMai += "Khi mua từ " + item.MNSL + " " + item.DonViTinh + "giảm" + item.MNG + "%";
+                                                }
+                                                if (khuyenMai == null)
+                                                {
+                                                    khuyenMai = "Không có khuyến mãi nào";
+                                                }
+                                            }
+                                            <div class="col-md-5 col-lg-5 col-xl-5 d-flex align-items-center" style="border-left-width: 2px;border-left-style: dashed;">
+                                                <div class="row row-cols-1">
+                                                    <div class="col"><span>Tên sản phẩm: <strong>@item.Ten</strong></span></div>
+                                                    <div class="col"><span>Còn lại: <strong>@item.SoLuong @item.DonViTinh</strong></span></div>
+                                                    <div class="col"><span>Giá mới:&nbsp;</span><span class="price" style="font-weight: bold;">@item.GiaMoi/@item.DonViTinh</span><span style="font-weight: bold;">đ</span></div>
+                                                    <div class="col d-flex justify-content-start align-items-center"><span>Giá cũ:<strong>&nbsp;</strong></span><span class="price" style="font-weight: bold;">@item.GiaCu/@item.DonViTinh</span><span style="font-weight: bold;">đ</span></div>
+                                                    <div class="col d-flex justify-content-start align-items-center"><span>Khuyễn mãi: <strong>@khuyenMai</strong></span></div>
+                                                </div>
+                                            </div>
+                                            @{
+                                                string diaChi = null;
+                                                if (item.DacSanD1 != null && item.DacSanD1.Length > 0)
+                                                {
+                                                    diaChi += item.DacSanD1 + " / ";
+                                                }
+                                                if (item.DacSanD2 != null && item.DacSanD2.Length > 0)
+                                                {
+                                                    diaChi += item.DacSanD2 + " / ";
+                                                }
+                                                if (item.DacSanD3 != null && item.DacSanD3.Length > 0)
+                                                {
+                                                    diaChi += item.DacSanD3;
+                                                }
+                                            }
+                                            <div class="col-md-5 col-lg-5 col-xl-5 d-flex align-items-center col-imgorder-admin" style="padding-left: 15px;padding-right: 15px;border-left-width: 2px;border-left-style: dashed;">
+                                                <div class="row row-cols-1">
+                                                    <div class="col"><span>Người bán: <strong>@item.TaiKhoan.TenChuTK</strong></span></div>
+                                                    <div class="col"><span>Loại mặt hàng: <strong>@item.Loai</strong></span></div>
+                                                    @if (item.VaoVu != null && item.VaoVu > 0 && item.RaVu != null && item.RaVu > 0)
+                                                    {
+                                                        <div class="col"><span>Thời gian vụ mùa: <strong>Tháng @item.VaoVu - @item.RaVu</strong></span></div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="col"><span>Thời gian vụ mùa: <strong>Không có</strong></span></div>
+                                                    }
+                                                    @if (item.DacSan == true)
+                                                    {
+                                                        <div class="col"><span>Đặc sản: <strong>@diaChi</strong></span></div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="col"><span>Đặc sản: <strong>Không</strong></span></div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 col-xl-12" style="height: 46px;">
+                                        <div class="row" style="height: 100%;cursor: pointer;">
+                                            <div class="col d-flex d-xl-flex justify-content-center align-items-center justify-content-xl-center align-items-xl-center detail-hover-open"><i class="fas fa-eye" style="font-size: 30px;"></i><a href="/admin/detailproduct?id=@item.Id" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;"></a></div>
+                                            <div class="col d-flex d-lg-flex d-xl-flex justify-content-center align-items-center justify-content-lg-center align-items-lg-center justify-content-xl-center align-items-xl-center plus-item-admin-order"><i class="fas fa-pencil-alt" style="font-size: 25px;"></i><a href="/admin/editproduct?id=@item.Id" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;"></a></div>
+                                            <div class="col d-flex d-xl-flex justify-content-center align-items-center justify-content-xl-center align-items-xl-center minus-item-admin-order"><i class="fa fa-remove" style="font-size: 30px;"></i><a href="/admin/deleteproduct?id=@item.Id" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;"></a></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        <div class="col d-flex justify-content-center align-items-start col-pagedlist-admin" style="overflow: hidden;">
+                            <div class="row row-cols-1">
+                                <div class="col d-flex justify-content-center align-items-end" style="font-weight: bold; margin-top: 30px;">
+                                    Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+                                </div>
+                                <div class="col d-flex justify-content-center">
+                                    @Html.PagedListPager(Model, page => Url.Action("Product", new { page }))
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@{
+    string sort = (string)TempData["Sort"];
+}
+<script>
+    var select = document.getElementById("sort");
+    if ("@sort") {
+        for (var i = 0; i < select.length; i++) {
+            var text = select.options[i].text;
+            if (text == '@sort') {
+                select.options[i].setAttribute('selected', true);
+            }
+        }
+    }
+</script>

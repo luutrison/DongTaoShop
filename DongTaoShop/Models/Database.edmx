@@ -1,0 +1,357 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DongTaoShopModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="DonHang">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdSanPham" Type="int" />
+          <Property Name="IdNguoiMua" Type="int" />
+          <Property Name="SoLuong" Type="int" />
+          <Property Name="MuaLanDau" Type="bit" />
+          <Property Name="MuaNhieu" Type="bit" />
+          <Property Name="ThanhVien" Type="bit" />
+          <Property Name="TinhTrang" Type="nvarchar(max)" />
+          <Property Name="NgayDat" Type="datetime" />
+          <Property Name="TongCong" Type="int" />
+        </EntityType>
+        <EntityType Name="SanPham">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ten" Type="nvarchar(max)" />
+          <Property Name="GiaMoi" Type="int" />
+          <Property Name="GiaCu" Type="int" />
+          <Property Name="MoTa" Type="nvarchar(max)" />
+          <Property Name="Loai" Type="nvarchar(max)" />
+          <Property Name="IdNguoiBan" Type="int" />
+          <Property Name="Anh" Type="nvarchar(max)" />
+          <Property Name="LuotMua" Type="int" />
+          <Property Name="SoLuong" Type="int" />
+          <Property Name="DacSan" Type="bit" />
+          <Property Name="DacSanD1" Type="nvarchar(max)" />
+          <Property Name="DacSanD2" Type="nvarchar(max)" />
+          <Property Name="VaoVu" Type="int" />
+          <Property Name="RaVu" Type="int" />
+          <Property Name="GLD" Type="int" />
+          <Property Name="MNSL" Type="int" />
+          <Property Name="MNG" Type="int" />
+          <Property Name="TVSPLM" Type="int" />
+          <Property Name="TVM" Type="int" />
+          <Property Name="TVG" Type="int" />
+          <Property Name="DonViTinh" Type="nvarchar(max)" />
+          <Property Name="DacSanD3" Type="nvarchar(max)" />
+          <Property Name="GoiY" Type="nvarchar(max)" />
+          <Property Name="GhiChu" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="TaiKhoan">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TenTK" Type="nvarchar(max)" />
+          <Property Name="MatKhau" Type="nvarchar(max)" />
+          <Property Name="Admin" Type="bit" />
+          <Property Name="Anh" Type="nvarchar(max)" />
+          <Property Name="TenChuTK" Type="nvarchar(max)" />
+          <Property Name="NgaySinh" Type="date" />
+          <Property Name="GioiTinh" Type="nvarchar(max)" />
+          <Property Name="CCCD" Type="nvarchar(max)" />
+          <Property Name="SDT" Type="nvarchar(max)" />
+          <Property Name="SoNha" Type="nvarchar(max)" />
+          <Property Name="Phuong" Type="nvarchar(max)" />
+          <Property Name="Quan" Type="nvarchar(max)" />
+          <Property Name="ThanhPho" Type="nvarchar(max)" />
+          <Property Name="GioiThieu" Type="nvarchar(max)" />
+          <Property Name="Token" Type="nvarchar(max)" />
+          <Property Name="Email" Type="nvarchar(max)" />
+        </EntityType>
+        <Association Name="FK_DonHang_SanPham">
+          <End Role="SanPham" Type="Self.SanPham" Multiplicity="0..1" />
+          <End Role="DonHang" Type="Self.DonHang" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SanPham">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DonHang">
+              <PropertyRef Name="IdSanPham" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DonHang_ToTable_1">
+          <End Role="TaiKhoan" Type="Self.TaiKhoan" Multiplicity="0..1" />
+          <End Role="DonHang" Type="Self.DonHang" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TaiKhoan">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DonHang">
+              <PropertyRef Name="IdNguoiMua" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SanPham_ToTaiKhoan">
+          <End Role="TaiKhoan" Type="Self.TaiKhoan" Multiplicity="0..1" />
+          <End Role="SanPham" Type="Self.SanPham" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TaiKhoan">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SanPham">
+              <PropertyRef Name="IdNguoiBan" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DongTaoShopModelStoreContainer">
+          <EntitySet Name="DonHang" EntityType="Self.DonHang" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SanPham" EntityType="Self.SanPham" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TaiKhoan" EntityType="Self.TaiKhoan" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_DonHang_SanPham" Association="Self.FK_DonHang_SanPham">
+            <End Role="SanPham" EntitySet="SanPham" />
+            <End Role="DonHang" EntitySet="DonHang" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DonHang_ToTable_1" Association="Self.FK_DonHang_ToTable_1">
+            <End Role="TaiKhoan" EntitySet="TaiKhoan" />
+            <End Role="DonHang" EntitySet="DonHang" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SanPham_ToTaiKhoan" Association="Self.FK_SanPham_ToTaiKhoan">
+            <End Role="TaiKhoan" EntitySet="TaiKhoan" />
+            <End Role="SanPham" EntitySet="SanPham" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DongTaoShopModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="DongTaoShopEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="DonHangs" EntityType="DongTaoShopModel.DonHang" />
+          <EntitySet Name="SanPhams" EntityType="DongTaoShopModel.SanPham" />
+          <EntitySet Name="TaiKhoans" EntityType="DongTaoShopModel.TaiKhoan" />
+          <AssociationSet Name="FK_DonHang_SanPham" Association="DongTaoShopModel.FK_DonHang_SanPham">
+            <End Role="SanPham" EntitySet="SanPhams" />
+            <End Role="DonHang" EntitySet="DonHangs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DonHang_ToTable_1" Association="DongTaoShopModel.FK_DonHang_ToTable_1">
+            <End Role="TaiKhoan" EntitySet="TaiKhoans" />
+            <End Role="DonHang" EntitySet="DonHangs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SanPham_ToTaiKhoan" Association="DongTaoShopModel.FK_SanPham_ToTaiKhoan">
+            <End Role="TaiKhoan" EntitySet="TaiKhoans" />
+            <End Role="SanPham" EntitySet="SanPhams" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="DonHang">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdSanPham" Type="Int32" />
+          <Property Name="IdNguoiMua" Type="Int32" />
+          <Property Name="SoLuong" Type="Int32" />
+          <Property Name="MuaLanDau" Type="Boolean" />
+          <Property Name="MuaNhieu" Type="Boolean" />
+          <Property Name="ThanhVien" Type="Boolean" />
+          <Property Name="TinhTrang" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="NgayDat" Type="DateTime" Precision="3" />
+          <Property Name="TongCong" Type="Int32" />
+          <NavigationProperty Name="SanPham" Relationship="DongTaoShopModel.FK_DonHang_SanPham" FromRole="DonHang" ToRole="SanPham" />
+          <NavigationProperty Name="TaiKhoan" Relationship="DongTaoShopModel.FK_DonHang_ToTable_1" FromRole="DonHang" ToRole="TaiKhoan" />
+        </EntityType>
+        <EntityType Name="SanPham">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ten" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="GiaMoi" Type="Int32" />
+          <Property Name="GiaCu" Type="Int32" />
+          <Property Name="MoTa" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Loai" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IdNguoiBan" Type="Int32" />
+          <Property Name="Anh" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LuotMua" Type="Int32" />
+          <Property Name="SoLuong" Type="Int32" />
+          <Property Name="DacSan" Type="Boolean" />
+          <Property Name="DacSanD1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DacSanD2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="VaoVu" Type="Int32" />
+          <Property Name="RaVu" Type="Int32" />
+          <Property Name="GLD" Type="Int32" />
+          <Property Name="MNSL" Type="Int32" />
+          <Property Name="MNG" Type="Int32" />
+          <Property Name="TVSPLM" Type="Int32" />
+          <Property Name="TVM" Type="Int32" />
+          <Property Name="TVG" Type="Int32" />
+          <Property Name="DonViTinh" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DacSanD3" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="GoiY" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="GhiChu" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="DonHangs" Relationship="DongTaoShopModel.FK_DonHang_SanPham" FromRole="SanPham" ToRole="DonHang" />
+          <NavigationProperty Name="TaiKhoan" Relationship="DongTaoShopModel.FK_SanPham_ToTaiKhoan" FromRole="SanPham" ToRole="TaiKhoan" />
+        </EntityType>
+        <EntityType Name="TaiKhoan">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TenTK" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MatKhau" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Admin" Type="Boolean" />
+          <Property Name="Anh" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TenChuTK" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="NgaySinh" Type="DateTime" Precision="0" />
+          <Property Name="GioiTinh" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CCCD" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SDT" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SoNha" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Phuong" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Quan" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ThanhPho" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="GioiThieu" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Token" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="DonHangs" Relationship="DongTaoShopModel.FK_DonHang_ToTable_1" FromRole="TaiKhoan" ToRole="DonHang" />
+          <NavigationProperty Name="SanPhams" Relationship="DongTaoShopModel.FK_SanPham_ToTaiKhoan" FromRole="TaiKhoan" ToRole="SanPham" />
+        </EntityType>
+        <Association Name="FK_DonHang_SanPham">
+          <End Type="DongTaoShopModel.SanPham" Role="SanPham" Multiplicity="0..1" />
+          <End Type="DongTaoShopModel.DonHang" Role="DonHang" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SanPham">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DonHang">
+              <PropertyRef Name="IdSanPham" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DonHang_ToTable_1">
+          <End Type="DongTaoShopModel.TaiKhoan" Role="TaiKhoan" Multiplicity="0..1" />
+          <End Type="DongTaoShopModel.DonHang" Role="DonHang" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TaiKhoan">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DonHang">
+              <PropertyRef Name="IdNguoiMua" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SanPham_ToTaiKhoan">
+          <End Type="DongTaoShopModel.TaiKhoan" Role="TaiKhoan" Multiplicity="0..1" />
+          <End Type="DongTaoShopModel.SanPham" Role="SanPham" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TaiKhoan">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SanPham">
+              <PropertyRef Name="IdNguoiBan" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DongTaoShopModelStoreContainer" CdmEntityContainer="DongTaoShopEntities">
+          <EntitySetMapping Name="DonHangs">
+            <EntityTypeMapping TypeName="DongTaoShopModel.DonHang">
+              <MappingFragment StoreEntitySet="DonHang">
+                <ScalarProperty Name="TongCong" ColumnName="TongCong" />
+                <ScalarProperty Name="NgayDat" ColumnName="NgayDat" />
+                <ScalarProperty Name="TinhTrang" ColumnName="TinhTrang" />
+                <ScalarProperty Name="ThanhVien" ColumnName="ThanhVien" />
+                <ScalarProperty Name="MuaNhieu" ColumnName="MuaNhieu" />
+                <ScalarProperty Name="MuaLanDau" ColumnName="MuaLanDau" />
+                <ScalarProperty Name="SoLuong" ColumnName="SoLuong" />
+                <ScalarProperty Name="IdNguoiMua" ColumnName="IdNguoiMua" />
+                <ScalarProperty Name="IdSanPham" ColumnName="IdSanPham" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SanPhams">
+            <EntityTypeMapping TypeName="DongTaoShopModel.SanPham">
+              <MappingFragment StoreEntitySet="SanPham">
+                <ScalarProperty Name="GhiChu" ColumnName="GhiChu" />
+                <ScalarProperty Name="GoiY" ColumnName="GoiY" />
+                <ScalarProperty Name="DacSanD3" ColumnName="DacSanD3" />
+                <ScalarProperty Name="DonViTinh" ColumnName="DonViTinh" />
+                <ScalarProperty Name="TVG" ColumnName="TVG" />
+                <ScalarProperty Name="TVM" ColumnName="TVM" />
+                <ScalarProperty Name="TVSPLM" ColumnName="TVSPLM" />
+                <ScalarProperty Name="MNG" ColumnName="MNG" />
+                <ScalarProperty Name="MNSL" ColumnName="MNSL" />
+                <ScalarProperty Name="GLD" ColumnName="GLD" />
+                <ScalarProperty Name="RaVu" ColumnName="RaVu" />
+                <ScalarProperty Name="VaoVu" ColumnName="VaoVu" />
+                <ScalarProperty Name="DacSanD2" ColumnName="DacSanD2" />
+                <ScalarProperty Name="DacSanD1" ColumnName="DacSanD1" />
+                <ScalarProperty Name="DacSan" ColumnName="DacSan" />
+                <ScalarProperty Name="SoLuong" ColumnName="SoLuong" />
+                <ScalarProperty Name="LuotMua" ColumnName="LuotMua" />
+                <ScalarProperty Name="Anh" ColumnName="Anh" />
+                <ScalarProperty Name="IdNguoiBan" ColumnName="IdNguoiBan" />
+                <ScalarProperty Name="Loai" ColumnName="Loai" />
+                <ScalarProperty Name="MoTa" ColumnName="MoTa" />
+                <ScalarProperty Name="GiaCu" ColumnName="GiaCu" />
+                <ScalarProperty Name="GiaMoi" ColumnName="GiaMoi" />
+                <ScalarProperty Name="Ten" ColumnName="Ten" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TaiKhoans">
+            <EntityTypeMapping TypeName="DongTaoShopModel.TaiKhoan">
+              <MappingFragment StoreEntitySet="TaiKhoan">
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Token" ColumnName="Token" />
+                <ScalarProperty Name="GioiThieu" ColumnName="GioiThieu" />
+                <ScalarProperty Name="ThanhPho" ColumnName="ThanhPho" />
+                <ScalarProperty Name="Quan" ColumnName="Quan" />
+                <ScalarProperty Name="Phuong" ColumnName="Phuong" />
+                <ScalarProperty Name="SoNha" ColumnName="SoNha" />
+                <ScalarProperty Name="SDT" ColumnName="SDT" />
+                <ScalarProperty Name="CCCD" ColumnName="CCCD" />
+                <ScalarProperty Name="GioiTinh" ColumnName="GioiTinh" />
+                <ScalarProperty Name="NgaySinh" ColumnName="NgaySinh" />
+                <ScalarProperty Name="TenChuTK" ColumnName="TenChuTK" />
+                <ScalarProperty Name="Anh" ColumnName="Anh" />
+                <ScalarProperty Name="Admin" ColumnName="Admin" />
+                <ScalarProperty Name="MatKhau" ColumnName="MatKhau" />
+                <ScalarProperty Name="TenTK" ColumnName="TenTK" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

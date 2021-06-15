@@ -1,0 +1,64 @@
+﻿
+@{
+    ViewBag.Title = "Đăng ký | Đông Tảo Shop - Chợ nông sản online của người Việt";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div style="position: fixed;top: 0;width: 100%;left: 0;height: 100vh;opacity: 0.50;background: #eeeeee;"></div>
+<section class="d-flex justify-content-center justify-content-md-center align-items-md-center content-padding-top" style="z-index: 1;overflow: hidden;">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-2" style="max-width: 1200px;width: 100%;">
+        <div class="col-md-7 col-lg-7 d-none d-md-flex col-img-login" style="background: #ffffff;">
+            <div style="width: 100%;background: url(&quot;../../assets/img/login-img.jpg&quot;) center / contain no-repeat;"></div>
+        </div>
+        <div class="col-md-5 col-lg-5 d-flex d-sm-flex justify-content-center justify-content-sm-center align-items-md-center align-items-lg-center align-items-xl-center" style="background: #4f937e;min-height: 700px;">
+            @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @style = "max-width: 330px;overflow: hidden;transition: .5s;width: 100%;", @class = "text-nowrap" }))
+            {
+                <div class="form-row row-cols-1 d-flex justify-content-center" style="background: #4f937e;">
+                    <div class="col d-flex justify-content-center"><span class="text-uppercase" style="font-size: 50px;color: rgb(255,255,255);margin-top: 10px;">Đăng Ký</span></div>
+                    <div class="col"><span style="font-size: 12px;color: rgb(255,255,255);">Tài khoản</span></div>
+                    <div class="col d-flex align-items-center"><i class="fa fa-user icon-in-log"></i><input class="form-control input-log" type="text" required="" minlength="6" style="background: #3f695c;color: rgb(255,255,255);outline: none;border: none;" name="account"></div>
+                    <div class="col"><span style="font-size: 12px;color: rgb(255,255,255);">Mật khẩu</span></div>
+                    <div class="col d-flex align-items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" class="bi bi-lock-fill icon-in-log">
+                            <path d="M2.5 9a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-7a2 2 0 0 1-2-2V9z"></path>
+                            <path fill-rule="evenodd" d="M4.5 4a3.5 3.5 0 1 1 7 0v3h-1V4a2.5 2.5 0 0 0-5 0v3h-1V4z"></path>
+                        </svg><input class="form-control input-log" type="password" minlength="6" required="" style="background: #3f695c;color: rgb(255,255,255);outline: none;border: none;" name="pass">
+                    </div>
+                    <div class="col"><span style="font-size: 12px;color: rgb(255,255,255);">Nhập lại mật khẩu</span></div>
+                    <div class="col d-flex align-items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" class="bi bi-lock-fill icon-in-log">
+                            <path d="M2.5 9a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-7a2 2 0 0 1-2-2V9z"></path>
+                            <path fill-rule="evenodd" d="M4.5 4a3.5 3.5 0 1 1 7 0v3h-1V4a2.5 2.5 0 0 0-5 0v3h-1V4z"></path>
+                        </svg><input class="form-control input-log" type="password" minlength="6" required="" style="background: #3f695c;color: rgb(255,255,255);outline: none;border: none;" name="repass">
+                    </div>
+                    <div class="col"><span style="font-size: 12px;color: rgb(255,255,255);">Email</span></div>
+                    <div class="col d-flex align-items-center"><i class="material-icons icon-in-log">email</i><input class="form-control input-log" type="email" style="background: #3f695c;color: rgb(255,255,255);outline: none;border: none;" name="email"></div>
+                    <div class="col align-items-center justify-content-md-end justify-content-lg-end col-more-login" style="margin-top: 5px;"><a class="justify-content-end" href="/account/index">Đã có tài khoản, đăng nhập ngay</a></div>
+                    <div class="col justify-content-center align-items-center" id="recaptcha" data-callback="show" style="height: 80px; margin-top: 20px; transform: scale(1.09); transform-origin: 0 0;"></div>
+                    <div class="col d-lg-flex justify-content-lg-center" style="margin-top: 30px; height: 60px"><button id="button_register" class="btn btn-primary border rounded-pill" style="width: 100%; background: rgb(221,85,85); outline: none; font-weight: bold; font-size: 18px; border: none; line-height: 40px; display: none; animation: fade; animation-duration: 1s;" type="submit">Đăng ký</button></div>
+                </div>
+                <input hidden id="recaptcha_ok" name="recaptcha" />
+            }
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript">
+    var onloadCallback = function () {
+        grecaptcha.render('recaptcha', {
+            'sitekey': '6LdoHhYbAAAAAC-Iy4_HHsN5J09akQuiYLItXaiX'
+        });
+    };
+</script>
+<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
+        async defer>
+</script>
+
+<script>
+    function show() {
+        var response = grecaptcha.getResponse();
+        $("#recaptcha_ok").val(response);
+        $("#button_register").css("display", "block");
+
+    }
+</script>
