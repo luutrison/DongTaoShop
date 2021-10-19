@@ -5,9 +5,12 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="f19c842a49e14b51bfdb9ab3cee1e1e6" Name="Diagram1">
-        <EntityTypeShape EntityType="DongTaoShopModel.DonHang" Width="1.5" PointX="5.25" PointY="7.25" />
-        <EntityTypeShape EntityType="DongTaoShopModel.SanPham" Width="1.5" PointX="3" PointY="7.5" />
-        <EntityTypeShape EntityType="DongTaoShopModel.TaiKhoan" Width="1.5" PointX="0.75" PointY="4.125" />
+        <EntityTypeShape EntityType="DongTaoShopModel.BinhLuan" Width="1.5" PointX="5.25" PointY="11.375" />
+        <EntityTypeShape EntityType="DongTaoShopModel.DonHang" Width="1.5" PointX="8.25" PointY="11.125" />
+        <EntityTypeShape EntityType="DongTaoShopModel.SanPham" Width="1.5" PointX="3" PointY="12.875" />
+        <EntityTypeShape EntityType="DongTaoShopModel.TaiKhoan" Width="1.5" PointX="0.75" PointY="6.125" />
+        <AssociationConnector Association="DongTaoShopModel.FK_BinhLuan_IdSanPham_SanPham_Id" />
+        <AssociationConnector Association="DongTaoShopModel.FK_BinhLuan_TaiKhoan" />
         <AssociationConnector Association="DongTaoShopModel.FK_DonHang_SanPham" />
         <AssociationConnector Association="DongTaoShopModel.FK_DonHang_ToTable_1" />
         <AssociationConnector Association="DongTaoShopModel.FK_SanPham_ToTaiKhoan" />

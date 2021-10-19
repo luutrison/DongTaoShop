@@ -17,6 +17,7 @@ namespace DongTaoShop.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public TaiKhoan()
         {
+            this.BinhLuans = new HashSet<BinhLuan>();
             this.DonHangs = new HashSet<DonHang>();
             this.SanPhams = new HashSet<SanPham>();
         }
@@ -38,7 +39,10 @@ namespace DongTaoShop.Models
         public string GioiThieu { get; set; }
         public string Token { get; set; }
         public string Email { get; set; }
+        public Nullable<bool> NhanVien { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BinhLuan> BinhLuans { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DonHang> DonHangs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

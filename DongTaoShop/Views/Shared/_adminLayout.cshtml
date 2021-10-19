@@ -33,6 +33,10 @@
 </head>
 <body>
 
+    @*loader*@
+    <section class="d-flex justify-content-center align-items-center" id="loading-holder" style="height: 100vh;position: fixed;background: #ffffff;top: 0;width: 100%;z-index: 10000; overflow: hidden"><img class="loader-img" src="../../assets/img/loader.gif" style="width: 100%;max-width: 600px;" /></section>
+
+
     @*Header*@
     <section style="position: sticky;top: 0;width: 100%;z-index: 1000;">
         <div class="row row-cols-1" style="width: 100%;margin: 0px;">
@@ -93,8 +97,6 @@
     </section>
 
 
-    @*loader*@
-    <section class="d-flex justify-content-center align-items-center" id="loading-holder" style="height: 100vh;position: fixed;background: #ffffff;top: 0;width: 100%;z-index: 1000;overflow: hidden;"><img class="loader-img" src="../../assets/img/loader.gif" style="width: 100%;max-width: 600px;" /></section>
 
     @*notification*@
 
@@ -206,6 +208,9 @@
             createNotification(element);
         }
     </script>
-
+    @*Clear notification store*@
+    <script>
+        sessionStorage.removeItem('ThongBao');
+    </script>
 </body>
 </html>

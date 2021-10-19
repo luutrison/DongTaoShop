@@ -25,6 +25,7 @@ namespace DongTaoShop.Models
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<BinhLuan> BinhLuans { get; set; }
         public virtual DbSet<DonHang> DonHangs { get; set; }
         public virtual DbSet<SanPham> SanPhams { get; set; }
         public virtual DbSet<TaiKhoan> TaiKhoans { get; set; }

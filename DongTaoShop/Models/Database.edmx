@@ -5,6 +5,18 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="DongTaoShopModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="BinhLuan">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="numeric" Precision="36" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdTaiKhoan" Type="int" Nullable="false" />
+          <Property Name="IdSanPham" Type="int" Nullable="false" />
+          <Property Name="DanhGia" Type="int" Nullable="false" />
+          <Property Name="BinhLuan" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="DaTraLoi" Type="bit" Nullable="false" />
+          <Property Name="NoiDungTraLoi" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
         <EntityType Name="DonHang">
           <Key>
             <PropertyRef Name="Id" />
@@ -49,6 +61,7 @@
           <Property Name="DacSanD3" Type="nvarchar(max)" />
           <Property Name="GoiY" Type="nvarchar(max)" />
           <Property Name="GhiChu" Type="nvarchar(max)" />
+          <Property Name="TimKiem" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="TaiKhoan">
           <Key>
@@ -71,7 +84,32 @@
           <Property Name="GioiThieu" Type="nvarchar(max)" />
           <Property Name="Token" Type="nvarchar(max)" />
           <Property Name="Email" Type="nvarchar(max)" />
+          <Property Name="NhanVien" Type="bit" />
         </EntityType>
+        <Association Name="FK_BinhLuan_IdSanPham_SanPham_Id">
+          <End Role="SanPham" Type="Self.SanPham" Multiplicity="1" />
+          <End Role="BinhLuan" Type="Self.BinhLuan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SanPham">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BinhLuan">
+              <PropertyRef Name="IdSanPham" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BinhLuan_TaiKhoan">
+          <End Role="TaiKhoan" Type="Self.TaiKhoan" Multiplicity="1" />
+          <End Role="BinhLuan" Type="Self.BinhLuan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TaiKhoan">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BinhLuan">
+              <PropertyRef Name="IdTaiKhoan" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_DonHang_SanPham">
           <End Role="SanPham" Type="Self.SanPham" Multiplicity="0..1" />
           <End Role="DonHang" Type="Self.DonHang" Multiplicity="*" />
@@ -109,9 +147,18 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="DongTaoShopModelStoreContainer">
+          <EntitySet Name="BinhLuan" EntityType="Self.BinhLuan" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DonHang" EntityType="Self.DonHang" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SanPham" EntityType="Self.SanPham" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TaiKhoan" EntityType="Self.TaiKhoan" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_BinhLuan_IdSanPham_SanPham_Id" Association="Self.FK_BinhLuan_IdSanPham_SanPham_Id">
+            <End Role="SanPham" EntitySet="SanPham" />
+            <End Role="BinhLuan" EntitySet="BinhLuan" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BinhLuan_TaiKhoan" Association="Self.FK_BinhLuan_TaiKhoan">
+            <End Role="TaiKhoan" EntitySet="TaiKhoan" />
+            <End Role="BinhLuan" EntitySet="BinhLuan" />
+          </AssociationSet>
           <AssociationSet Name="FK_DonHang_SanPham" Association="Self.FK_DonHang_SanPham">
             <End Role="SanPham" EntitySet="SanPham" />
             <End Role="DonHang" EntitySet="DonHang" />
@@ -130,9 +177,18 @@
     <edmx:ConceptualModels>
       <Schema Namespace="DongTaoShopModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="DongTaoShopEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="BinhLuans" EntityType="DongTaoShopModel.BinhLuan" />
           <EntitySet Name="DonHangs" EntityType="DongTaoShopModel.DonHang" />
           <EntitySet Name="SanPhams" EntityType="DongTaoShopModel.SanPham" />
           <EntitySet Name="TaiKhoans" EntityType="DongTaoShopModel.TaiKhoan" />
+          <AssociationSet Name="FK_BinhLuan_IdSanPham_SanPham_Id" Association="DongTaoShopModel.FK_BinhLuan_IdSanPham_SanPham_Id">
+            <End Role="SanPham" EntitySet="SanPhams" />
+            <End Role="BinhLuan" EntitySet="BinhLuans" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BinhLuan_TaiKhoan" Association="DongTaoShopModel.FK_BinhLuan_TaiKhoan">
+            <End Role="TaiKhoan" EntitySet="TaiKhoans" />
+            <End Role="BinhLuan" EntitySet="BinhLuans" />
+          </AssociationSet>
           <AssociationSet Name="FK_DonHang_SanPham" Association="DongTaoShopModel.FK_DonHang_SanPham">
             <End Role="SanPham" EntitySet="SanPhams" />
             <End Role="DonHang" EntitySet="DonHangs" />
@@ -146,6 +202,20 @@
             <End Role="SanPham" EntitySet="SanPhams" />
           </AssociationSet>
         </EntityContainer>
+        <EntityType Name="BinhLuan">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Decimal" Nullable="false" Precision="36" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdTaiKhoan" Type="Int32" Nullable="false" />
+          <Property Name="IdSanPham" Type="Int32" Nullable="false" />
+          <Property Name="DanhGia" Type="Int32" Nullable="false" />
+          <Property Name="BinhLuan1" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DaTraLoi" Type="Boolean" Nullable="false" />
+          <Property Name="NoiDungTraLoi" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="SanPham" Relationship="DongTaoShopModel.FK_BinhLuan_IdSanPham_SanPham_Id" FromRole="BinhLuan" ToRole="SanPham" />
+          <NavigationProperty Name="TaiKhoan" Relationship="DongTaoShopModel.FK_BinhLuan_TaiKhoan" FromRole="BinhLuan" ToRole="TaiKhoan" />
+        </EntityType>
         <EntityType Name="DonHang">
           <Key>
             <PropertyRef Name="Id" />
@@ -192,6 +262,8 @@
           <Property Name="DacSanD3" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="GoiY" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="GhiChu" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TimKiem" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="BinhLuans" Relationship="DongTaoShopModel.FK_BinhLuan_IdSanPham_SanPham_Id" FromRole="SanPham" ToRole="BinhLuan" />
           <NavigationProperty Name="DonHangs" Relationship="DongTaoShopModel.FK_DonHang_SanPham" FromRole="SanPham" ToRole="DonHang" />
           <NavigationProperty Name="TaiKhoan" Relationship="DongTaoShopModel.FK_SanPham_ToTaiKhoan" FromRole="SanPham" ToRole="TaiKhoan" />
         </EntityType>
@@ -216,9 +288,35 @@
           <Property Name="GioiThieu" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Token" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="NhanVien" Type="Boolean" />
+          <NavigationProperty Name="BinhLuans" Relationship="DongTaoShopModel.FK_BinhLuan_TaiKhoan" FromRole="TaiKhoan" ToRole="BinhLuan" />
           <NavigationProperty Name="DonHangs" Relationship="DongTaoShopModel.FK_DonHang_ToTable_1" FromRole="TaiKhoan" ToRole="DonHang" />
           <NavigationProperty Name="SanPhams" Relationship="DongTaoShopModel.FK_SanPham_ToTaiKhoan" FromRole="TaiKhoan" ToRole="SanPham" />
         </EntityType>
+        <Association Name="FK_BinhLuan_IdSanPham_SanPham_Id">
+          <End Type="DongTaoShopModel.SanPham" Role="SanPham" Multiplicity="1" />
+          <End Type="DongTaoShopModel.BinhLuan" Role="BinhLuan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SanPham">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BinhLuan">
+              <PropertyRef Name="IdSanPham" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BinhLuan_TaiKhoan">
+          <End Type="DongTaoShopModel.TaiKhoan" Role="TaiKhoan" Multiplicity="1" />
+          <End Type="DongTaoShopModel.BinhLuan" Role="BinhLuan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TaiKhoan">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BinhLuan">
+              <PropertyRef Name="IdTaiKhoan" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_DonHang_SanPham">
           <End Type="DongTaoShopModel.SanPham" Role="SanPham" Multiplicity="0..1" />
           <End Type="DongTaoShopModel.DonHang" Role="DonHang" Multiplicity="*" />
@@ -255,12 +353,25 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="DongTaoShopModelStoreContainer" CdmEntityContainer="DongTaoShopEntities">
+          <EntitySetMapping Name="BinhLuans">
+            <EntityTypeMapping TypeName="DongTaoShopModel.BinhLuan">
+              <MappingFragment StoreEntitySet="BinhLuan">
+                <ScalarProperty Name="NoiDungTraLoi" ColumnName="NoiDungTraLoi" />
+                <ScalarProperty Name="DaTraLoi" ColumnName="DaTraLoi" />
+                <ScalarProperty Name="BinhLuan1" ColumnName="BinhLuan" />
+                <ScalarProperty Name="DanhGia" ColumnName="DanhGia" />
+                <ScalarProperty Name="IdSanPham" ColumnName="IdSanPham" />
+                <ScalarProperty Name="IdTaiKhoan" ColumnName="IdTaiKhoan" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="DonHangs">
             <EntityTypeMapping TypeName="DongTaoShopModel.DonHang">
               <MappingFragment StoreEntitySet="DonHang">
@@ -280,6 +391,7 @@
           <EntitySetMapping Name="SanPhams">
             <EntityTypeMapping TypeName="DongTaoShopModel.SanPham">
               <MappingFragment StoreEntitySet="SanPham">
+                <ScalarProperty Name="TimKiem" ColumnName="TimKiem" />
                 <ScalarProperty Name="GhiChu" ColumnName="GhiChu" />
                 <ScalarProperty Name="GoiY" ColumnName="GoiY" />
                 <ScalarProperty Name="DacSanD3" ColumnName="DacSanD3" />
@@ -311,6 +423,7 @@
           <EntitySetMapping Name="TaiKhoans">
             <EntityTypeMapping TypeName="DongTaoShopModel.TaiKhoan">
               <MappingFragment StoreEntitySet="TaiKhoan">
+                <ScalarProperty Name="NhanVien" ColumnName="NhanVien" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Token" ColumnName="Token" />
                 <ScalarProperty Name="GioiThieu" ColumnName="GioiThieu" />

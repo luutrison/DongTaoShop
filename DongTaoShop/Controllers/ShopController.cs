@@ -49,7 +49,7 @@ namespace DongTaoShop.Controllers
                 }
                 else if (selectSort.Equals("Nổi bật"))
                 {
-                    sort = db.SanPhams.Where(b => b.LuotMua != 0).Where(c => c.SoLuong > 0).Take(36).ToList();
+                    sort = db.SanPhams.Where(b => b.LuotMua != 0).Where(c => c.SoLuong > 0).OrderByDescending(c => c.LuotMua).Take(36).ToList();
                     TempData["NoiBat"] = "Show";
                 }
                 else if (selectSort.Equals("Vụ mùa"))
@@ -86,24 +86,27 @@ namespace DongTaoShop.Controllers
         {
             if (collection.Count > 0)
             {
-                List<SanPham> listSearch = new List<SanPham>();
-                List<SanPham> allList = db.SanPhams.ToList();
-                TempData["SelectSort"] = "check-shop-cur";
-                string[] search = collection[0].Split(' ');
 
-                foreach (SanPham item in allList)
+                string[] timkiem = collection[0].Split(' ');
+
+                List<SanPham> listOut = new List<SanPham>();
+
+                for (int i = 0; i < timkiem.Length; i++)
                 {
-
-                    for (int i = 0; i < search.Length; i++)
+                    string currentSearch = ShopController.RemoveSign(timkiem[i]);
+                    var list = db.SanPhams.Where(x => x.TimKiem.Contains(currentSearch)).ToList();
+                    foreach (var item in list)
                     {
-                        if (RemoveSign(item.Ten).ToLower().Contains(RemoveSign(search[i]).ToLower()))
-                        {
-                            listSearch.Add(item);
-                        }
+                        listOut.Add(item);
                     }
+
                 }
-                List<SanPham> list = listSearch.GroupBy(g => g).OrderByDescending(x => x.Count()).SelectMany(x => x).Distinct().ToList();
-                TempData["ListShop"] = list;
+
+                var outOK = listOut.GroupBy(g => g).OrderByDescending(x => x.Count()).SelectMany(x => x).Distinct().ToList();
+
+
+
+                TempData["ListShop"] = outOK;
             }
             return RedirectToAction("index");
         }

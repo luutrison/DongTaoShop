@@ -280,4 +280,13 @@
     var txt = @Html.Raw(Json.Encode(mota));
     console.log(txt);
     document.getElementById("Mota").innerHTML = txt;
+
+    //Set Image Size Mota
+
+    var image = document.querySelectorAll("#Mota img");
+    for (var i = 0; i < image.length; i++) {
+        var element = image[i];
+        element.style.width = "100%";
+    }
+
 </script>

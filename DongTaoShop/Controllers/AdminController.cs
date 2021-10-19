@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -183,24 +184,26 @@ namespace DongTaoShop.Controllers
         {
             if (collection.Count > 0)
             {
-                List<SanPham> listSearch = new List<SanPham>();
-                List<SanPham> allList = db.SanPhams.ToList();
+
                 TempData["SelectSort"] = "check-shop-cur";
-                string[] search = collection[0].Split(' ');
+                string[] timkiem = collection[0].Split(' ');
 
-                foreach (SanPham item in allList)
+                List<SanPham> listOut = new List<SanPham>();
+
+                for (int i = 0; i < timkiem.Length; i++)
                 {
-
-                    for (int i = 0; i < search.Length; i++)
+                    string currentSearch = ShopController.RemoveSign(timkiem[i]);
+                    var list = db.SanPhams.Where(x => x.TimKiem.Contains(currentSearch)).ToList();
+                    foreach (var item in list)
                     {
-                        if (ShopController.RemoveSign(item.Ten).ToLower().Contains(ShopController.RemoveSign(search[i]).ToLower()))
-                        {
-                            listSearch.Add(item);
-                        }
+                        listOut.Add(item);
                     }
+
                 }
-                List<SanPham> list = listSearch.GroupBy(g => g).OrderByDescending(x => x.Count()).SelectMany(x => x).Distinct().ToList();
-                TempData["ListSanPham"] = list;
+
+                var outOK = listOut.GroupBy(g => g).OrderByDescending(x => x.Count()).SelectMany(x => x).Distinct().ToList();
+
+                TempData["ListSanPham"] = outOK;
                 return RedirectToAction("product");
             }
             return RedirectToAction("index");
@@ -381,6 +384,10 @@ namespace DongTaoShop.Controllers
                             error += 1;
                         }
                     }
+
+
+
+
                     //Mo ta
                     sanPham.MoTa = mota;
                     //ID
@@ -411,6 +418,27 @@ namespace DongTaoShop.Controllers
                     if (error == 0)
                     {
                         noti.Add("Đã thêm sản phẩm mới");
+
+                        //Timkiem
+
+                        List<string> search = new List<string>();
+
+                        if (dacsan.Equals("True"))
+                        {
+                            search.Add("dac san");
+                        }
+                        search.Add(ShopController.RemoveSign(sanPham.Ten.ToLower()));
+                        search.Add(ShopController.RemoveSign(sanPham.Loai.ToLower()));
+
+                        string contentSearch = null;
+                        foreach (var item in search)
+                        {
+                            contentSearch += contentSearch + " " + item;
+                        }
+
+                        sanPham.TimKiem = contentSearch;
+
+
                         db.SanPhams.Add(sanPham);
                         db.SaveChanges();
                         Session["ThongBao"] = noti;
@@ -710,7 +738,7 @@ namespace DongTaoShop.Controllers
                         }
                         image.SaveAs(fulPath);
                     }
-                    else if(image != null && image.ContentLength > 1 * 1024 * 1024)
+                    else if (image != null && image.ContentLength > 1 * 1024 * 1024)
                     {
                         error += 1;
                         noti.Add("Bad Ảnh đại diện phải nhỏ hơn 1MB");
@@ -719,6 +747,26 @@ namespace DongTaoShop.Controllers
                     if (error == 0)
                     {
                         noti.Add("Good Cập nhật đã được lưu lại");
+
+
+                        List<string> search = new List<string>();
+
+                        if (dacsan.Equals("True"))
+                        {
+                            search.Add("dac san");
+                        }
+                        search.Add(ShopController.RemoveSign(sanpham.Ten.ToLower()));
+                        search.Add(ShopController.RemoveSign(sanpham.Loai.ToLower()));
+
+                        string contentSearch = null;
+                        foreach (var item in search)
+                        {
+                            contentSearch += contentSearch + " " + item;
+                        }
+
+                        sanpham.TimKiem = contentSearch;
+
+
                         db.SaveChanges();
                         Session["ThongBao"] = noti;
                         return RefreshProduct();
@@ -727,7 +775,7 @@ namespace DongTaoShop.Controllers
                     {
                         noti.Add("Bad Số vấn đề sảy ra " + error);
                         Session["ThongBao"] = noti;
-                        return RedirectToAction("editproduct", new { id = id});
+                        return RedirectToAction("editproduct", new { id = id });
                     }
 
                 }
@@ -743,6 +791,66 @@ namespace DongTaoShop.Controllers
         public ActionResult Chart()
         {
             return View();
+        }
+
+        public ActionResult Account(int? page)
+        {
+            var token = Session["UserToken"];
+            if (token != null && AccountController.OnLogin(token.ToString(), db))
+            {
+                var list = db.TaiKhoans.ToList();
+
+                return View(list.ToPagedList(page ?? 1, 10));
+            }
+
+
+            Session["ThongBao"] = new List<string> { "Bad Phiên đăng nhập đã hết hạn hoặc tài khoản không phải Admin" };
+            return RedirectToAction("index", "account");
+        }
+        [HttpPost]
+        public async Task<ActionResult>  UpdateAccount(FormCollection collection)
+        {
+            var token = Session["UserToken"];
+            if (token != null && AccountController.OnLogin(token.ToString(),db))
+            {
+                if (collection.Count == 3)
+                {
+                    var id = collection["id"].Split(',').ToArray();
+                    var admin = collection["admin"].Split(',').ToArray();
+                    var nhanvien = collection["staff"].Split(',').ToArray();
+
+                    for (int i = 0; i < id.Length; i++)
+                    {
+                        var currentId = Int16.Parse(id[i]);
+                        var account = db.TaiKhoans.Where(x => x.Id == currentId).FirstOrDefault();
+                        account.Admin = Boolean.Parse(admin[i]);
+                        account.NhanVien = Boolean.Parse(nhanvien[i]);
+                        db.SaveChanges();
+                    }
+                   
+                }
+                Session["ThongBao"] = new List<string> { "Good Cập nhật thành công" };
+                return RedirectToAction("account");
+            }
+
+            Session["ThongBao"] = new List<string> { "Bad Phiên đăng nhập đã hết hạn hoặc tài khoản không phải Admin" };
+            return RedirectToAction("index", "account");
+        }
+
+        public async Task<ActionResult> DeleteAccount(int? id)
+        {
+            var token = Session["UserToken"];
+            if (id != null && token != null && AccountController.OnLogin(token.ToString(), db))
+            {
+                var user = db.TaiKhoans.Where(x => x.Id == id).FirstOrDefault();
+                db.TaiKhoans.Remove(user);
+                db.SaveChanges();
+                Session["ThongBao"] = new List<string> { "Good Tài khoản đã được xóa" };
+                return RedirectToAction("account");
+            }
+            Session["ThongBao"] = new List<string> { "Bad Phiên đăng nhập đã hết hạn hoặc tài khoản không phải Admin" };
+            return RedirectToAction("index", "account");
+
         }
 
     }

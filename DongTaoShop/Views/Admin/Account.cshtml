@@ -1,0 +1,174 @@
+﻿@using DongTaoShop.Models;
+@using PagedList.Mvc;
+@model PagedList.IPagedList<DongTaoShop.Models.TaiKhoan>
+@{
+    ViewBag.Title = "Quản lý tài khoản | Đông Tảo Shop - Chợ nông sản online của người Việt";
+    Layout = "~/Views/Shared/_adminLayout.cshtml";
+
+    List<TaiKhoan> list = ViewBag.List;
+
+}
+
+<link href="~/assets/css/extend/ToggedCheckBox.css" rel="stylesheet" />
+
+<div style="position: fixed;top: 0;width: 100%;left: 0;height: 100vh;opacity: 0.50;background: #f4f4f4;"></div>
+
+<section class="d-flex justify-content-center content-padding-top" style="z-index: 10;min-height: 700px;">
+    <div class="row row-cols-2" style="width: 100%;max-width: 1200px;">
+        <div class="col-lg-3 col-xl-3 nav-account-pc" style="transition: .5s;z-index: 8;">
+            <div class="row row-cols-1" style="background: rgb(255,255,255);overflow: hidden;box-shadow: inset 0px 0px 5px rgb(43,157,110);margin: 0px;position: sticky;top: 20%;border: 3px solid rgb(43,157,110);">
+                <div class="col col-slidermain">
+                    <div class="row" style="padding-top: 15px;padding-bottom: 15px;">
+                        <div class="col-3 col-xl-2 d-flex justify-content-center align-items-lg-center"><i class="fas fa-shipping-fast" style="font-size: 20px;"></i></div>
+                        <div class="col-auto d-lg-flex d-xl-flex align-items-lg-center align-items-xl-center" style="font-size: 20px;"><span style="font-weight: bold;">Đơn hàng</span></div>
+                    </div><a href="/admin" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;"></a>
+                </div>
+                <div class="col col-slidermain" style="border-top: 1px dotted rgb(0,0,0) ;">
+                    <div class="row row-cols-2" style="padding-top: 15px;padding-bottom: 15px;">
+                        <div class="col-3 col-xl-2 d-flex justify-content-center align-items-center"><i class="fas fa-seedling" style="font-size: 21px;"></i></div>
+                        <div class="col-auto d-lg-flex d-xl-flex align-items-lg-center align-items-xl-center" style="font-size: 20px;"><span style="font-weight: bold;">Sản phẩm</span></div>
+                    </div><a href="/admin/product" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;"></a>
+                </div>
+                <div class="col col-slidermain active-account-menu" style="border-top-width: 1px;border-top-style: dotted;">
+                    <div class="row" style="padding-top: 15px;padding-bottom: 15px;">
+                        <div class="col-3 col-xl-2 d-flex justify-content-center align-items-lg-center"><i class="fas fa-user-edit" style="font-size: 21px;"></i></div>
+                        <div class="col-auto d-lg-flex d-xl-flex align-items-lg-center align-items-xl-center" style="font-size: 20px;"><span style="font-weight: bold;">Tài khoản</span></div>
+                    </div><a href="/admin/account" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;"></a>
+                </div>
+                <div class="col col-slidermain " style="border-top-width: 1px;border-top-style: dotted;">
+                    <div class="row" style="padding-top: 15px;padding-bottom: 15px;">
+                        <div class="col-3 col-xl-2 d-flex justify-content-center align-items-lg-center"><i class="fas fa-chart-pie" style="font-size: 21px;"></i></div>
+                        <div class="col-auto d-lg-flex d-xl-flex align-items-lg-center align-items-xl-center" style="font-size: 20px;"><span style="font-weight: bold;">Thống kê</span></div>
+                    </div><a href="/admin/chart" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;"></a>
+                </div>
+                <div class="col col-logout" style="border-top-width: 1px;border-top-style: dotted;">
+                    <div class="row" style="padding-top: 15px;padding-bottom: 15px;">
+                        <div class="col-3 col-xl-2 d-flex justify-content-center"><i class="fas fa-sign-out-alt d-lg-flex align-items-lg-center" style="font-size: 21px;"></i></div>
+                        <div class="col-auto d-lg-flex d-xl-flex align-items-lg-center align-items-xl-center" style="font-size: 20px;"><span style="font-weight: bold;">Đăng xuất</span></div>
+                    </div><a href="/account/logout" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;"></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-lg-8 col-xl-9" style="padding: 0px;border-style: solid;border-color: rgb(43,157,110);">
+            <div class="row" style="margin: 0px;">
+                <div class="col" style="padding-top: 20px;padding-bottom: 20px;">
+                    <form style="width: 100%;"><input class="form-control" type="search" style="width: 100%;" placeholder="Tên tài khoản"></form>
+                </div>
+            </div>
+            <div class="row row-cols-1 d-flex justify-content-center" style="width: 100%;margin: 0px;padding-left: 15px;padding-right: 15px;">
+                <div class="col" style="padding: 0px;position: sticky;top: 0;z-index: 2;">
+                    <div class="row col-header-account-admin" style="max-width: 1200px;width: 100%;margin: 0px;">
+                        <div class="col-4 col-sm-3 col-md-3 text-truncate d-flex justify-content-center align-items-center col-header-item-account" style="background: #d94d4d;"><span>Tài khoản</span></div>
+                        <div class="col d-flex justify-content-center align-items-center col-header-item-account" style="display: flex;align-items: center;justify-content: center;background: #34be42;"><span>Nhân viên</span></div>
+                        <div class="col col-header-item-account" style="display: flex;justify-content: center;align-items: center;background: #5e6aaa;"><span class="text-center d-flex justify-content-center align-items-center">Quản lý</span></div>
+                    </div>
+                </div>
+                <div class="col" style="padding: 0px;margin-bottom: 50px;">
+
+                    @using (Html.BeginForm("updateaccount", "admin", FormMethod.Post, new { @id = "form-account-admin", @enctype = "multipart/form-data" }))
+                    {
+                        foreach (var item in Model)
+                        {
+                            <div class="row" style="max-width: 1200px;width: 100%;margin-top: 10px;margin-right: 0px;margin-left: 0px;border: 1px solid rgb(43,157,110) ;">
+                                <div class="col-4 col-sm-3 col-md-3 text-truncate d-flex justify-content-center" style="border-right: 2px dashed rgb(170,176,183);padding-top: 10px;padding-bottom: 10px;">
+                                    <div class="row row-cols-1 text-truncate d-flex justify-content-center">
+                                        <div class="col d-flex justify-content-center">
+                                            @if (item.Anh == null)
+                                            {
+                                                <div style="background: url(&quot;../../assets/img/avatar.png&quot;) center / cover no-repeat; width: 80px; height: 80px; border-radius: 80px; "></div>
+                                            }
+                                            else
+                                            {
+                                            <div style="background: url(&quot;../../@item.Anh&quot;) center / cover no-repeat;width: 80px;height: 80px;border-radius: 80px;"></div>
+                                            }
+                                        </div>
+                                        <div class="col d-flex justify-content-center"><span class="d-flex justify-content-center">TK-@item.Id</span></div>
+                                        <div class="col text-truncate d-flex justify-content-center"><span class="d-flex justify-content-center">@item.TenTK</span></div>
+                                    </div>
+                                </div>
+
+                                @{
+                                    string admin = item.Admin == true ? "true" : "false";
+
+                                    string staff = item.NhanVien == true ? "true" : "false";
+                                }
+
+                                <div class="col" style="display: flex;align-items: center;justify-content: center;border-right: 2px dashed rgb(170,176,183) ;">
+                                    <label class="switch"><input class="checkbox-account-admin" onclick="clickCheckBox(this)" type="checkbox" value="@staff" /><span class="slider round"></span></label>
+                                    <input name="staff" class="x_out" value="@staff" hidden />
+                                </div>
+
+                                <div class="col" style="display: flex;align-items: center;justify-content: center;">
+                                    <input class="x_out" name="admin" value="@admin" hidden />
+
+                                    <label class="switch"><input class="checkbox-account-admin" type="checkbox" onclick="clickCheckBox(this)" value="@admin" /><span class="slider round"></span></label>
+                                </div>
+
+                                <input name="id" value="@item.Id" hidden />
+
+                                <div class="col-12" style="display: flex;justify-content: center;align-items: center;padding: 0px;">
+                                    <div class="row row-action-item-account" style="width: 100%;height: 50px;">
+                                        <a data-toggle="tooltip" data-placement="bottom" class="col d-flex justify-content-center align-items-center" style="background: #3daebe;color: rgb(255,255,255);" title="Chỉnh sửa tài khoản TK-@item.Id"><i class="fa fa-edit"></i></a>
+                                        <a href="admin/deleteaccount?id=@item.Id" data-toggle="tooltip" data-placement="bottom" class="col d-flex justify-content-center align-items-center" style="background: #d63333;color: rgb(255,255,255);" title="Xóa TK-@item.Id"><i class="fa fa-trash-o"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                    }
+
+                </div>
+                <div class="col" style="padding-top: 10px;padding-bottom: 20px;">
+                    <div class="d-flex justify-content-center" style="padding:0px;width: 100%;padding-bottom: 20px;">
+                        <div class="row row-cols-1">
+                            <div class="col d-flex justify-content-center align-items-end" style="font-weight: bold; margin-top: 30px;">
+                                Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+                            </div>
+                            <div class="col d-flex justify-content-center">
+                                @Html.PagedListPager(Model, page => Url.Action("Account", new { page }))
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-center" style="width: 100%;">
+                        <div class="row row-action-account-admin" style="width: 100%;">
+                            <div class="col" style="padding: 0px;"><button class="btn btn-primary border rounded-0 hover-light" type="submit" style="width: 100%;background: rgb(33,136,68);" onclick="clickSubmitForm()">Đồng ý</button></div>
+                            <div class="col" style="padding: 0px;"><button class="btn btn-primary border rounded-0 hover-light" type="button" style="width: 100%;background: rgb(200,35,35);">Hủy bỏ</button></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script>
+
+    var checkBoxAccount = document.querySelectorAll(".checkbox-account-admin");
+
+    for (var i = 0; i < checkBoxAccount.length; i++) {
+        var element = checkBoxAccount[i];
+        if (element.value == "true") {
+            element.checked = true;
+        }
+    }
+
+    function clickCheckBox(n) {
+        var near = n.closest(".col").querySelector(".x_out");
+        if (n.checked) {
+            n.value = "true";
+            near.value = "true";
+        }
+        else {
+            n.value = "false";
+            near.value = "false";
+        }
+    }
+
+    function clickSubmitForm() {
+        var form = document.getElementById("form-account-admin");
+        form.submit();
+    }
+
+</script>
+
